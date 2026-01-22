@@ -1,0 +1,106 @@
+# Justfile for {{ project_name }}
+# Run 'just --list' to see all available commands
+
+# Default recipe (runs when just 'just' is called)
+default:
+    @just --list
+
+# Format code with Ruff
+fmt:
+    uv run ruff format .
+
+# Lint code with Ruff
+lint:
+    uv run ruff check .
+
+# Fix linting issues automatically
+fix:
+    uv run ruff check --fix .
+
+# Run type checker
+typecheck:
+    uv run basedpyright
+
+# Run tests
+test:
+    uv run pytest
+
+# Run tests in parallel
+test-parallel:
+    uv run pytest -n auto
+
+# Run tests with coverage
+coverage:
+    uv run pytest --cov --cov-report=term-missing --cov-report=html
+
+# Run all CI checks locally
+ci: lint typecheck test
+
+# Run all checks and fix what can be fixed
+check: fix typecheck test
+
+# Clean build artifacts and caches
+clean:
+    rm -rf build/
+    rm -rf dist/
+    rm -rf *.egg-info
+    rm -rf .pytest_cache/
+    rm -rf .ruff_cache/
+    rm -rf .coverage
+    rm -rf htmlcov/
+    find . -type d -name __pycache__ -exec rm -rf {} +
+    find . -type f -name "*.pyc" -delete
+
+# Install pre-commit hooks
+install-hooks:
+    uv run pre-commit install
+
+# Run pre-commit on all files
+pre-commit:
+    uv run pre-commit run --all-files
+
+# Show project info
+doctor:
+    @echo "=== Environment Info ==="
+    @python --version
+    @uv --version
+    @echo ""
+    @echo "=== Tool Versions ==="
+    @uv run ruff --version
+    @uv run basedpyright --version || echo "basedpyright not found"
+    @uv run pytest --version
+    @echo ""
+    @echo "=== Project Info ==="
+    @echo "Package: {{ package_name }}"
+    @echo "Python: {{ python_min_version }}+"
+
+{% if include_docs %}
+# Serve documentation locally
+docs-serve:
+    uv run mkdocs serve
+
+# Build documentation
+docs-build:
+    uv run mkdocs build
+
+# Deploy documentation to GitHub Pages
+docs-deploy:
+    uv run mkdocs gh-deploy --force
+{% endif %}
+
+# Build package
+build:
+    uv build
+
+# Publish to PyPI (requires API token)
+publish:
+    uv publish
+
+# Sync dependencies
+sync:
+    uv sync
+
+# Update dependencies
+update:
+    uv lock --upgrade
+    uv sync

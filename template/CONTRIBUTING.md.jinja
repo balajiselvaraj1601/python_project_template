@@ -1,0 +1,237 @@
+# Contributing to {{ project_name }}
+
+Thank you for your interest in contributing! This document provides guidelines and information for contributors.
+
+## Development Philosophy
+
+This project prioritizes:
+
+1. **Type Safety**: All code must be strictly typed
+2. **Testing**: {% if include_hypothesis %}Property-based testing preferred for verifying invariants{% else %}Comprehensive unit tests required{% endif %}
+3. **Code Quality**: Automated checks via Ruff and BasedPyright
+4. **Simplicity**: Clear, readable code over clever solutions
+5. **Documentation**: Code should be self-documenting with helpful docstrings
+
+## Getting Started
+
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/{{ project_slug }}.git`
+3. Set up development environment: `uv sync`
+4. Install pre-commit hooks: `uv run pre-commit install`
+5. Create a feature branch: `git checkout -b feature/your-feature-name`
+
+## Code Standards
+
+### Type Hints
+
+All functions must have complete type hints:
+
+```python
+def good_function(value: int, name: str) -> dict[str, int]:
+    """This is properly typed."""
+    return {name: value}
+
+def bad_function(value, name):  # ❌ Missing type hints
+    return {name: value}
+```
+
+### Docstrings
+
+Use Google-style docstrings:
+
+```python
+def calculate_mean(values: list[float]) -> float:
+    """Calculate the arithmetic mean of a list of numbers.
+
+    Args:
+        values: A list of numeric values. Must not be empty.
+
+    Returns:
+        The arithmetic mean of the input values.
+
+    Raises:
+        ValueError: If the input list is empty.
+
+    Examples:
+        >>> calculate_mean([1.0, 2.0, 3.0])
+        2.0
+    """
+    if not values:
+        raise ValueError("Cannot calculate mean of empty list")
+    return sum(values) / len(values)
+```
+
+### Testing
+
+{% if include_hypothesis %}
+#### Property-Based Testing
+
+Use Hypothesis to verify invariants:
+
+```python
+from hypothesis import given
+from hypothesis import strategies as st
+
+@given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
+def test_mean_is_between_min_and_max(values: list[float]) -> None:
+    """The mean should always be between the min and max values."""
+    result = calculate_mean(values)
+    assert min(values) <= result <= max(values)
+```
+{% endif %}
+
+#### Unit Tests
+
+Write focused unit tests:
+
+```python
+def test_calculate_mean_simple() -> None:
+    """Test mean calculation with simple values."""
+    assert calculate_mean([1.0, 2.0, 3.0]) == 2.0
+
+def test_calculate_mean_empty_list_raises() -> None:
+    """Test that empty list raises ValueError."""
+    with pytest.raises(ValueError, match="empty list"):
+        calculate_mean([])
+```
+
+### Code Style
+
+We use **Ruff** for both formatting and linting:
+
+- Line length: 88 characters
+- Use double quotes for strings
+- One import per line, sorted by isort
+- No unused imports or variables
+
+### Anti-Patterns to Avoid
+
+❌ **Global Mutable State**
+```python
+# Bad: Global state makes code hard to reason about
+cache = {}
+
+def get_or_compute(key: str) -> int:
+    if key not in cache:
+        cache[key] = expensive_computation(key)
+    return cache[key]
+```
+
+✅ **Explicit State Management**
+```python
+# Good: Pass state explicitly
+def get_or_compute(cache: dict[str, int], key: str) -> int:
+    if key not in cache:
+        cache[key] = expensive_computation(key)
+    return cache[key]
+```
+
+❌ **Bare Excepts**
+```python
+# Bad: Catches everything, including KeyboardInterrupt
+try:
+    risky_operation()
+except:
+    pass
+```
+
+✅ **Specific Exception Handling**
+```python
+# Good: Only catch what you expect
+try:
+    risky_operation()
+except ValueError as e:
+    logger.warning(f"Invalid value: {e}")
+    return None
+```
+
+## Workflow
+
+### Making Changes
+
+1. **Write tests first** (TDD preferred)
+2. **Implement the feature**
+3. **Run all checks**: `just ci`
+4. **Update documentation** if needed
+5. **Commit with clear messages**
+
+### Commit Messages
+
+Follow conventional commits:
+
+```
+feat: add new data processing function
+fix: handle edge case in mean calculation
+docs: update installation instructions
+test: add property tests for statistics module
+refactor: simplify error handling logic
+```
+
+### Before Submitting
+
+Run all checks locally:
+
+```bash
+just ci
+```
+
+This runs:
+- `ruff format --check` (formatting)
+- `ruff check` (linting)
+- `basedpyright` (type checking)
+- `pytest` (tests)
+
+## Pull Request Process
+
+1. Ensure all CI checks pass
+2. Update the README if you've added features
+3. Add tests for new functionality
+4. Request review from maintainers
+5. Address review feedback
+6. Squash commits if requested
+
+## Copilot Best Practices
+
+This project is optimized for GitHub Copilot and similar AI assistants:
+
+### For Copilot Users
+
+- **Trust the structure**: The project layout guides Copilot to good patterns
+- **Type hints help**: Copilot uses types to suggest better completions
+- **Docstrings matter**: Clear docstrings lead to better suggestions
+- **Follow patterns**: Copilot learns from existing code structure
+
+### Writing Copilot-Friendly Code
+
+```python
+# Good: Clear intent, types, and structure help Copilot
+def process_dataset(
+    data: pd.DataFrame,
+    column: str,
+    threshold: float = 0.5,
+) -> pd.DataFrame:
+    """Filter dataset based on column threshold.
+
+    Copilot will suggest appropriate pandas operations based on
+    the clear type hints and descriptive function name.
+    """
+    # Copilot suggestion will likely be correct here
+    return data[data[column] > threshold]
+```
+
+## Questions?
+
+- Open an issue for bugs or feature requests
+- Start a discussion for questions or ideas
+- Check existing issues before creating new ones
+
+## Code of Conduct
+
+- Be respectful and inclusive
+- Focus on constructive feedback
+- Help others learn and grow
+- Assume good intentions
+
+---
+
+**Remember**: Good code is code that others (and future you) can understand and maintain. When in doubt, choose clarity over cleverness.

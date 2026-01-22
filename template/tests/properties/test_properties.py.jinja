@@ -1,0 +1,52 @@
+{% if include_hypothesis %}"""Property-based tests using Hypothesis."""
+
+from hypothesis import given
+from hypothesis import strategies as st
+
+from {{ package_name }}.core import example_function
+
+
+@given(st.integers())
+def test_example_function_integers_identity(value: int) -> None:
+    """Test that example_function preserves integer values."""
+    assert example_function(value) == value
+
+
+@given(st.text())
+def test_example_function_strings_identity(value: str) -> None:
+    """Test that example_function preserves string values."""
+    assert example_function(value) == value
+
+
+@given(st.lists(st.integers()))
+def test_example_function_lists_identity(value: list[int]) -> None:
+    """Test that example_function preserves list values."""
+    result = example_function(value)
+    assert result == value
+    assert result is value  # Should return the exact same object
+
+
+{% if include_numpy %}
+import numpy as np
+from hypothesis import strategies as st
+from hypothesis.extra.numpy import arrays
+
+
+@given(arrays(dtype=np.float64, shape=st.integers(1, 100)))
+def test_example_array_function_non_negative(arr: np.ndarray) -> None:
+    """Test that squaring always produces non-negative results."""
+    from {{ package_name }}.core import example_array_function
+
+    result = example_array_function(arr)
+    assert np.all(result >= 0), "Squared values should be non-negative"
+
+
+@given(arrays(dtype=np.float64, shape=st.integers(1, 100)))
+def test_example_array_function_shape_preserved(arr: np.ndarray) -> None:
+    """Test that the array shape is preserved."""
+    from {{ package_name }}.core import example_array_function
+
+    result = example_array_function(arr)
+    assert result.shape == arr.shape
+{% endif %}
+{% endif %}

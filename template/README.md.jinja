@@ -1,0 +1,152 @@
+# {{ project_name }}
+
+[![CI](https://github.com/{{ github_username }}/{{ project_slug }}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{ github_username }}/{{ project_slug }}/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/{{ github_username }}/{{ project_slug }}/branch/main/graph/badge.svg)](https://codecov.io/gh/{{ github_username }}/{{ project_slug }})
+[![Python {{ python_min_version }}+](https://img.shields.io/badge/python-{{ python_min_version }}+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Type checked: BasedPyright](https://img.shields.io/badge/type%20checker-basedpyright-blue)](https://github.com/DetachHead/basedpyright)
+
+{{ project_description }}
+
+## Features
+
+- 🔬 **Rigorous Testing**: Unit tests{% if include_hypothesis %}, property-based testing with Hypothesis{% endif %}
+- 🧠 **Copilot-Optimized**: Structured for excellent AI assistance
+- ⚡ **Modern Tooling**: uv, Ruff, BasedPyright
+- 📊 **Data Science Ready**: {% if include_numpy %}NumPy{% endif %}{% if include_numpy and include_pandas_support %}, {% endif %}{% if include_pandas_support %}pandas{% endif %} support
+- 🎯 **Type Safe**: Strict typing with py.typed marker
+- 📦 **Well Packaged**: Follows modern Python packaging standards
+
+## Installation
+
+```bash
+# Using pip
+pip install {{ package_name }}
+
+# Using uv
+uv add {{ package_name }}
+```
+
+## Quick Start
+
+```python
+from {{ package_name }} import example_function
+
+result = example_function(42)
+print(result)  # 42
+```
+
+{% if include_numpy %}
+```python
+import numpy as np
+from {{ package_name }}.core import example_array_function
+
+arr = np.array([1.0, 2.0, 3.0])
+result = example_array_function(arr)
+print(result)  # [1. 4. 9.]
+```
+{% endif %}
+
+## Development Setup
+
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management and [just](https://github.com/casey/just) for task running.
+
+### Prerequisites
+
+- Python {{ python_min_version }}+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [just](https://github.com/casey/just#installation) (optional but recommended)
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/{{ github_username }}/{{ project_slug }}.git
+cd {{ project_slug }}
+
+# Install dependencies
+uv sync
+
+# Install pre-commit hooks
+uv run pre-commit install
+```
+
+## Development Workflow
+
+```bash
+# Format code
+just fmt
+
+# Run linter
+just lint
+
+# Run type checker
+just typecheck
+
+# Run tests
+just test
+
+# Run all CI checks locally
+just ci
+
+# Run tests with coverage
+just coverage
+```
+
+Or without `just`:
+
+```bash
+uv run ruff format .
+uv run ruff check .
+uv run basedpyright
+uv run pytest
+```
+
+## Project Structure
+
+```
+{{ project_slug }}/
+├── src/
+│   └── {{ package_name }}/
+│       ├── __init__.py       # Package initialization
+│       ├── core.py           # Core functionality
+│       └── py.typed          # Type hint marker
+├── tests/
+│   ├── unit/                 # Unit tests
+│   ├── properties/           # Property-based tests
+│   └── test_imports.py       # Import sanity checks
+├── .github/
+│   └── workflows/
+│       └── ci.yml            # CI configuration
+├── pyproject.toml            # Project metadata and dependencies
+├── justfile                  # Task runner configuration
+└── README.md                 # This file
+```
+
+## Design Philosophy
+
+This library is designed with several key principles:
+
+1. **Library-First**: Built as a reusable library, not an application
+2. **Type Safety**: Strict typing enforced at every level
+3. **Testability**: {% if include_hypothesis %}Property-based tests ensure correctness across input space{% else %}Comprehensive test coverage{% endif %}
+4. **Copilot-Aware**: Documentation and structure optimized for AI assistance
+5. **Modern Python**: Leverages Python {{ python_min_version }}+ features
+6. **Deterministic**: Locked dependencies via uv for reproducible builds
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
+
+## License
+
+This project is licensed under the {{ license }} License - see the LICENSE file for details.
+
+## Acknowledgments
+
+Built with:
+- [uv](https://docs.astral.sh/uv/) - Fast Python package manager
+- [Ruff](https://docs.astral.sh/ruff/) - Fast Python linter and formatter
+- [BasedPyright](https://github.com/DetachHead/basedpyright) - Type checker
+- [pytest](https://docs.pytest.org/) - Testing framework
+{% if include_hypothesis %}- [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing{% endif %}

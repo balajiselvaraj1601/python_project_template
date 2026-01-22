@@ -1,0 +1,45 @@
+{% if include_docs %}# {{ project_name }}
+
+{{ project_description }}
+
+## Overview
+
+This library provides high-quality, well-tested tools for data science workflows.
+
+## Installation
+
+Install using pip or uv:
+
+```bash
+pip install {{ package_name }}
+```
+
+Or with uv:
+
+```bash
+uv add {{ package_name }}
+```
+
+## Quick Example
+
+```python
+from {{ package_name }} import example_function
+
+result = example_function(42)
+print(result)
+```
+
+## Features
+
+- ✅ **Type Safe**: Fully typed with strict type checking
+- ✅ **Well Tested**: {% if include_hypothesis %}Property-based and unit tests{% else %}Comprehensive test coverage{% endif %}
+- ✅ **Modern Python**: Requires Python {{ python_min_version }}+
+- ✅ **Fast**: Optimized for performance
+- ✅ **Documented**: Clear API documentation
+
+## Next Steps
+
+- [Design Philosophy](design.md) - Understand the design decisions
+- [API Reference](api.md) - Detailed API documentation
+- [GitHub Repository](https://github.com/{{ github_username }}/{{ project_slug }}) - Source code and issues
+{% endif %}

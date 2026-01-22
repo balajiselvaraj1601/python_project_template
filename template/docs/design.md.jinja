@@ -1,0 +1,115 @@
+{% if include_docs %}# Design Philosophy
+
+## Core Principles
+
+### 1. Library-First Design
+
+This is a **library**, not an application or service. This means:
+
+- No global state or singletons
+- Pure functions where possible
+- Explicit dependencies
+- Composable APIs
+
+### 2. Type Safety
+
+Every function is strictly typed:
+
+```python
+def process_data(values: list[float], threshold: float) -> list[float]:
+    """Clear types make intent obvious."""
+    return [v for v in values if v > threshold]
+```
+
+Benefits:
+- Catches errors at development time
+- Enables better IDE support
+- Serves as living documentation
+- Helps AI assistants like Copilot
+
+### 3. Testing Strategy
+
+{% if include_hypothesis %}
+We use **property-based testing** to verify invariants:
+
+```python
+@given(st.lists(st.floats()))
+def test_filter_preserves_order(values: list[float]) -> None:
+    """Filtering should preserve relative order."""
+    result = process_data(values, threshold=0.0)
+    # Properties that must hold for ALL inputs
+    assert all(a <= b for a, b in zip(result, result[1:]))
+```
+
+This catches edge cases that unit tests miss.
+{% else %}
+We use comprehensive unit testing to ensure correctness.
+{% endif %}
+
+### 4. Copilot Optimization
+
+The project structure guides AI assistants:
+
+- Clear naming conventions
+- Consistent patterns
+- Comprehensive docstrings
+- Type hints everywhere
+
+### 5. Zero Global State
+
+Global mutable state is forbidden. Instead:
+
+```python
+# ❌ Bad: Hidden global state
+cache = {}
+def get_value(key: str) -> int:
+    return cache.get(key, 0)
+
+# ✅ Good: Explicit state
+def get_value(cache: dict[str, int], key: str) -> int:
+    return cache.get(key, 0)
+```
+
+### 6. Thread Safety
+
+All code is designed to be thread-safe by default:
+
+- No mutable globals
+- Pure functions where possible
+- Explicit when mutation occurs
+
+## Performance Considerations
+
+{% if include_numpy %}
+For numerical operations, we leverage NumPy's vectorization:
+
+```python
+# Vectorized operations are orders of magnitude faster
+result = arr ** 2  # Good
+# vs
+result = [x ** 2 for x in arr]  # Slower
+```
+{% endif %}
+
+## Error Handling
+
+We follow Python's "ask forgiveness, not permission" (EAFP) principle:
+
+```python
+def safe_divide(a: float, b: float) -> float | None:
+    """Divide with error handling."""
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
+```
+
+## Future Compatibility
+
+This library targets Python {{ python_min_version }}+, which includes:
+
+- Modern type hints (PEP 604: `X | Y` unions)
+- Match statements (PEP 634)
+- Improved error messages
+- Performance improvements
+{% endif %}

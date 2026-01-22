@@ -1,0 +1,15 @@
+{% if include_docs %}# API Reference
+
+::: {{ package_name }}
+    options:
+      show_root_heading: true
+      show_source: true
+
+## Core Module
+
+::: {{ package_name }}.core
+    options:
+      show_root_heading: true
+      show_source: true
+      members_order: source
+{% endif %}
