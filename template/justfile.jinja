@@ -1,106 +1,141 @@
+# ============================================================
 # Justfile for {{ project_name }}
-# Run 'just --list' to see all available commands
+#
+# Usage:
+#   just            # list commands
+#   just ci         # run full CI locally
+#   just test       # run tests
+# ============================================================
 
-# Default recipe (runs when just 'just' is called)
+# Always show commands if no recipe is given
 default:
     @just --list
 
-# Format code with Ruff
+# ----------------------------------------------------------------------------------------------------
+# Helpers (private)
+# ----------------------------------------------------------------------------------------------------
+
+_set_env:
+    @echo "Using Python >= {{ python_min_version }}"
+    @uv --version > /dev/null
+
+# ----------------------------------------------------------------------------------------------------
+# Formatting & Linting
+# ----------------------------------------------------------------------------------------------------
+
 fmt:
-    uv run ruff format .
+    @uv run ruff format .
 
-# Lint code with Ruff
 lint:
-    uv run ruff check .
+    @uv run ruff check .
 
-# Fix linting issues automatically
 fix:
-    uv run ruff check --fix .
+    @uv run ruff check --fix .
 
-# Run type checker
-typecheck:
-    uv run basedpyright
+# ----------------------------------------------------------------------------------------------------
+# Type checking
+# ----------------------------------------------------------------------------------------------------
 
-# Run tests
+type:
+    @uv run basedpyright
+
+# ----------------------------------------------------------------------------------------------------
+# Testing
+# ----------------------------------------------------------------------------------------------------
+
 test:
-    uv run pytest
+    @uv run pytest tests/ -v
 
-# Run tests in parallel
 test-parallel:
-    uv run pytest -n auto
+    @uv run pytest tests/ -v -n auto
 
-# Run tests with coverage
 coverage:
-    uv run pytest --cov --cov-report=term-missing --cov-report=html
+    @uv run pytest tests/ \
+        --cov=src \
+        --cov-report=term-missing \
+        --cov-report=html \
+        --cov-report=xml
 
-# Run all CI checks locally
-ci: lint typecheck test
+# ----------------------------------------------------------------------------------------------------
+# Pre-commit
+# ----------------------------------------------------------------------------------------------------
 
-# Run all checks and fix what can be fixed
-check: fix typecheck test
+precommit-install:
+    @uv run pre-commit install
+    @uv run pre-commit install --hook-type pre-push
 
-# Clean build artifacts and caches
+precommit:
+    @uv run pre-commit run --all-files --verbose
+
+# ----------------------------------------------------------------------------------------------------
+# Dependency management
+# ----------------------------------------------------------------------------------------------------
+
+sync:
+    @uv sync
+
+update:
+    @uv lock --upgrade
+    @uv sync
+
+# ----------------------------------------------------------------------------------------------------
+# Docs (optional)
+# ----------------------------------------------------------------------------------------------------
+{% if include_docs %}
+docs-serve:
+    @uv run mkdocs serve
+
+docs-build:
+    @uv run mkdocs build
+
+docs-deploy:
+    @uv run mkdocs gh-deploy --force
+{% endif %}
+
+# ----------------------------------------------------------------------------------------------------
+# Build & Publish
+# ----------------------------------------------------------------------------------------------------
+
+build:
+    @uv build
+
+publish:
+    @uv publish
+
+# ----------------------------------------------------------------------------------------------------
+# Cleaning
+# ----------------------------------------------------------------------------------------------------
+
 clean:
-    rm -rf build/
-    rm -rf dist/
-    rm -rf *.egg-info
-    rm -rf .pytest_cache/
-    rm -rf .ruff_cache/
-    rm -rf .coverage
-    rm -rf htmlcov/
-    find . -type d -name __pycache__ -exec rm -rf {} +
-    find . -type f -name "*.pyc" -delete
+    @rm -rf build/ dist/ *.egg-info
+    @rm -rf .pytest_cache .ruff_cache .coverage htmlcov
+    @find . -type d -name "__pycache__" -exec rm -rf {} +
+    @find . -type f -name "*.pyc" -delete
 
-# Install pre-commit hooks
-install-hooks:
-    uv run pre-commit install
+# ----------------------------------------------------------------------------------------------------
+# CI (local mirror of GitHub Actions)
+# ----------------------------------------------------------------------------------------------------
 
-# Run pre-commit on all files
-pre-commit:
-    uv run pre-commit run --all-files
+ci:
+    @just lint
+    @just type
+    @just test
+    @just precommit
 
-# Show project info
+# ----------------------------------------------------------------------------------------------------
+# Doctor / Diagnostics
+# ----------------------------------------------------------------------------------------------------
+
 doctor:
-    @echo "=== Environment Info ==="
+    @echo "=== Environment ==="
     @python --version
     @uv --version
     @echo ""
-    @echo "=== Tool Versions ==="
+    @echo "=== Tools ==="
     @uv run ruff --version
-    @uv run basedpyright --version || echo "basedpyright not found"
+    @uv run basedpyright --version || echo "basedpyright not installed"
     @uv run pytest --version
     @echo ""
-    @echo "=== Project Info ==="
+    @echo "=== Project ==="
     @echo "Package: {{ package_name }}"
-    @echo "Python: {{ python_min_version }}+"
-
-{% if include_docs %}
-# Serve documentation locally
-docs-serve:
-    uv run mkdocs serve
-
-# Build documentation
-docs-build:
-    uv run mkdocs build
-
-# Deploy documentation to GitHub Pages
-docs-deploy:
-    uv run mkdocs gh-deploy --force
-{% endif %}
-
-# Build package
-build:
-    uv build
-
-# Publish to PyPI (requires API token)
-publish:
-    uv publish
-
-# Sync dependencies
-sync:
-    uv sync
-
-# Update dependencies
-update:
-    uv lock --upgrade
-    uv sync
+    @echo "Python: >= {{ python_min_version }}"

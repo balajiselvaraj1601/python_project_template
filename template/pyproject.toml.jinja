@@ -23,6 +23,8 @@ classifiers = [
 dependencies = [
     {% if include_numpy %}"numpy>=1.26",{% endif %}
     {% if include_pandas_support %}"pandas>=2.0",{% endif %}
+    "pre-commit>=4.0.0",
+    "ruff>=0.8.0",
 ]
 
 [project.optional-dependencies]
@@ -66,7 +68,7 @@ packages = ["src/{{ package_name }}"]
 # ============================================================================
 
 [tool.ruff]
-line-length = 88
+line-length = 100
 target-version = "py{{ python_min_version | replace('.', '') }}"
 src = ["src", "tests"]
 

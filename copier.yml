@@ -1,20 +1,44 @@
 # Copier Template Configuration for Python Data-Science Libraries
 # Modern, uv-first, Copilot-optimized template
 
+# --------------------------------------------------------------------------------------------------------------------
+# Template metadata
+# --------------------------------------------------------------------------------------------------------------------
+# Minimal required Copier version for this template and where the
+# template lives inside the repository.
 _min_copier_version: "9.0.0"
 _subdirectory: template
+
+# Jinja extensions enabled for rendering templates. Add extensions
+# here only when template logic requires them.
 _jinja_extensions:
   - jinja2_time.TimeExtension
+  - jinja2.ext.do
+  - jinja2.ext.loopcontrols
 
-# Lifecycle: Skip these files on updates to prevent overwriting user changes
+# File used to persist answers between runs so re-running copier
+# can reuse previously provided values.
+_answers_file: ".copier-answers.yml"
+
+# --------------------------------------------------------------------------------------------------------------------
+# Lifecycle (update safety)
+# --------------------------------------------------------------------------------------------------------------------
+# Files and directories listed here will be preserved on template
+# updates to avoid overwriting user edits in generated projects.
 _skip_if_exists:
   - pyproject.toml
   - README.md
   - CONTRIBUTING.md
   - src/{{ package_name }}/__init__.py
   - "*.md"
+  - mkdocs.yml
+  - docs/
 
+# --------------------------------------------------------------------------------------------------------------------
 # Questions / Prompts
+# --------------------------------------------------------------------------------------------------------------------
+# Interactive prompts presented when generating a project. Keep
+# prompts clear and provide sensible defaults to simplify onboarding.
 project_name:
   type: str
   help: Human-readable project name (e.g., "My Data Library")
@@ -100,7 +124,11 @@ codecov_token:
   default: ""
   placeholder: "Leave empty to configure later"
 
+# --------------------------------------------------------------------------------------------------------------------
 # Computed values
+# --------------------------------------------------------------------------------------------------------------------
+# Template-generated computed values (not asked interactively).
+# Use these for dynamic defaults and CI matrix generation.
 current_year:
   type: str
   default: "{% now 'utc', '%Y' %}"
@@ -116,14 +144,31 @@ github_actions_python_versions:
     ["3.13"]
     {%- endif %}
 
+# --------------------------------------------------------------------------------------------------------------------
 # Post-generation tasks
+# --------------------------------------------------------------------------------------------------------------------
+# Commands run after template rendering. Keep tasks idempotent and
+# safe; failing tasks should not leave the repository in a broken state.
 _tasks:
   - ["git", "init"]
   - ["git", "branch", "-M", "main"]
   - ["uv", "sync"]
   - ["uv", "run", "pre-commit", "install"]
   - ["git", "add", "-A"]
+  - command: uv run pre-commit run --all-files || true
+  - ["git", "add", "-A"]
   - ["git", "commit", "-m", "Initial commit from template"]
   - command: echo "✅ Project {{ project_name }} created successfully!"
   - command: echo "📁 Location $(pwd)"
   - command: echo "🚀 Run 'just ci' to verify everything works"
+
+# --------------------------------------------------------------------------------------------------------------------
+# Template-only exclusions
+# --------------------------------------------------------------------------------------------------------------------
+# Files and directories present in the template repo that should not
+# be copied into generated projects (editor state, virtualenvs, etc.).
+_exclude:
+  - ".git"
+  - ".venv"
+  - "__pycache__"
+  - "*.pyc"

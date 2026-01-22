@@ -1,0 +1,87 @@
+# .pre-commit-config.yaml
+# Production-ready pre-commit configuration optimized for uv / ruff / BasedPyright.
+# - Uses uv to run repo-managed tool versions
+# - Keeps fast checks at commit stage, heavier checks at push/CI
+# - Pin external hooks; review revs regularly (Renovate can help)
+
+repos:
+  # ----------------------------------------------------------------------------------------------------
+  # Local hooks (use uv so versions are managed by pylock.toml)
+  # ----------------------------------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: Ruff Format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+        pass_filenames: true
+        stages: [pre-commit]
+
+      - id: ruff-check
+        name: Ruff Lint (auto-fix run first)
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+        pass_filenames: true
+        stages: [pre-commit]
+
+      - id: basedpyright
+        name: BasedPyright (type check)
+        entry: uv run basedpyright
+        language: system
+        types: [python]
+        # NOTE: If full repo type-check is slow, move this to "pre-push" stage.
+        stages: [pre-commit]
+
+  # ----------------------------------------------------------------------------------------------------
+  # Basic hygiene, YAML/TOML checks
+  # ----------------------------------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+      - id: no-commit-to-branch
+        args: ["--branch", "main"]
+
+
+
+  # ----------------------------------------------------------------------------------------------------
+  # Detect secrets (prevent leaks)
+  # ----------------------------------------------------------------------------------------------------
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        stages: [pre-commit]
+
+  # ----------------------------------------------------------------------------------------------------
+  # Optional notebook output-stripping for example notebooks
+  # ----------------------------------------------------------------------------------------------------
+  # Uncomment if you store example notebooks in the repo and want outputs removed on commit.
+  # - repo: https://github.com/kynan/nbstripout
+  #   rev: v0.5.0
+  #   hooks:
+  #     - id: nbstripout
+
+  # ----------------------------------------------------------------------------------------------------
+  # Pre-push: run tests before push (can be slow for large test suites)
+  # ----------------------------------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: pytest-push
+        name: pytest (uv) pre-push
+        entry: uv run pytest -q
+        language: system
+        types: [python]
+        stages: [pre-push]

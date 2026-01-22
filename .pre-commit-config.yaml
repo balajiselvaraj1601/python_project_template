@@ -1,0 +1,96 @@
+# .pre-commit-config.yaml
+# Production-ready pre-commit configuration optimized for uv / ruff / BasedPyright.
+# - Uses uv tool to run tools without requiring package installation
+# - Keeps fast checks at commit stage, heavier checks at push/CI
+# - Pin external hooks; review revs regularly (Renovate can help)
+
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  # ----------------------------------------------------------------------------------------------------
+  # Local hooks (use uv tool for standalone tools)
+  # ----------------------------------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: Ruff Format
+        entry: bash -c 'uv tool run ruff format "$@"' --
+        language: system
+        types: [python]
+        pass_filenames: true
+        stages: [pre-commit]
+
+      - id: ruff-check
+        name: Ruff Lint (auto-fix)
+        entry: bash -c 'uv tool run ruff check --fix "$@"' --
+        language: system
+        types: [python]
+        pass_filenames: true
+        stages: [pre-commit]
+
+      - id: basedpyright
+        name: BasedPyright (type check)
+        entry: bash -c 'uv tool run basedpyright'
+        language: system
+        types: [python]
+        pass_filenames: false
+        # NOTE: If full repo type-check is slow, move this to "pre-push" stage.
+        stages: [pre-commit]
+
+  # ----------------------------------------------------------------------------------------------------
+  # Basic hygiene, YAML/TOML checks
+  # ----------------------------------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: check-json
+        exclude: ^\.vscode/.*\.json$  # VS Code uses JSONC (allows comments)
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+      # Uncomment to prevent direct commits to main/master branches
+      # - id: no-commit-to-branch
+      #   args: ["--branch", "main", "--branch", "master"]
+
+
+
+  # ----------------------------------------------------------------------------------------------------
+  # Detect secrets (prevent leaks)
+  # ----------------------------------------------------------------------------------------------------
+  # Uncomment if you want secret detection and create a baseline file first:
+  # Run: detect-secrets scan > .secrets.baseline
+  # - repo: https://github.com/Yelp/detect-secrets
+  #   rev: v1.5.0
+  #   hooks:
+  #     - id: detect-secrets
+  #       args: ["--baseline", ".secrets.baseline"]
+  #       stages: [pre-commit]
+
+  # ----------------------------------------------------------------------------------------------------
+  # Optional notebook output-stripping for example notebooks
+  # ----------------------------------------------------------------------------------------------------
+  # Uncomment if you store example notebooks in the repo and want outputs removed on commit.
+  # - repo: https://github.com/kynan/nbstripout
+  #   rev: v0.5.0
+  #   hooks:
+  #     - id: nbstripout
+
+  # ----------------------------------------------------------------------------------------------------
+  # Pre-push: run tests before push (can be slow for large test suites)
+  # ----------------------------------------------------------------------------------------------------
+  # Uncomment if you have tests set up:
+  # - repo: local
+  #   hooks:
+  #     - id: pytest-push
+  #       name: pytest (uv) pre-push
+  #       entry: bash -c 'uv tool run pytest -q'
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: false
+  #       stages: [pre-push]

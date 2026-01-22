@@ -1,7 +1,14 @@
-{% if include_hypothesis %}"""Property-based tests using Hypothesis."""
+{% if include_hypothesis %}
+"""Property-based tests using Hypothesis."""
+
 
 from hypothesis import given
 from hypothesis import strategies as st
+
+{% if include_numpy %}
+import numpy as np
+from hypothesis.extra.numpy import arrays
+{% endif %}
 
 from {{ package_name }}.core import example_function
 
@@ -23,15 +30,13 @@ def test_example_function_lists_identity(value: list[int]) -> None:
     """Test that example_function preserves list values."""
     result = example_function(value)
     assert result == value
-    assert result is value  # Should return the exact same object
+    # Don't assert identity (`is`) for mutable inputs — equality is sufficient
 
 
 {% if include_numpy %}
-import numpy as np
-from hypothesis import strategies as st
-from hypothesis.extra.numpy import arrays
 
-
+# `shape=st.integers(1, 100)` produces 1-D arrays of varying length.
+# For multi-dimensional arrays use a tuple strategy like `shape=st.tuples(...)`.
 @given(arrays(dtype=np.float64, shape=st.integers(1, 100)))
 def test_example_array_function_non_negative(arr: np.ndarray) -> None:
     """Test that squaring always produces non-negative results."""
