@@ -151,8 +151,9 @@ github_actions_python_versions:
 # safe; failing tasks should not leave the repository in a broken state.
 _tasks:
   - ["git", "init"]
-  - ["uv", "sync"]
-  - command: uv run pip install -e '.[dev,test]' || true
+  - ["pip", "install", "--upgrade", "pip"]
+  - ["pip", "install", "uv"]
+  - ["uv", "sync", "--extra", "dev", "--extra", "test"]
   - ["uv", "run", "pre-commit", "install"]
   - command: uv run pre-commit run --all-files || true
   - ["git", "add", "-A"]

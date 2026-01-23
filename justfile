@@ -1,5 +1,5 @@
 # ==========================================================================
-# Justfile for {{ project_name }}
+# Justfile for python-project-template
 #
 # Usage:
 #   just            # list commands
@@ -16,7 +16,7 @@ default:
 # -------------------------------------------------------------------------
 
 _set_env:
-    @echo "Using Python >= {{ python_min_version }}"
+    @echo "Using Python >= 3.11"
     @uv --version > /dev/null
 
 # -------------------------------------------------------------------------
@@ -33,10 +33,14 @@ fix:
     @uv run ruff check --fix .
 
 mdformat:
-    @uv run mdformat .
+    @uv run sh -c 'files=$(git ls-files --exclude-standard "*.md"); if [ -n "$files" ]; then printf "%s\n" $files | xargs mdformat; else echo "No markdown files to format."; fi'
 
 mdformat-check:
-    @uv run mdformat --check .
+    @uv run sh -c 'files=$(git ls-files --exclude-standard "*.md"); if [ -n "$files" ]; then printf "%s\n" $files | xargs mdformat --check; else echo "No markdown files to check."; fi'
+
+# Reformat Jinja templates under `template/`
+djlint:
+    @uv run sh -c 'find template -type f -name "*.jinja" -print0 | xargs -0 -n 50 uv run djlint --reformat --extension jinja || true'
 
 # -------------------------------------------------------------------------
 # Type checking
@@ -49,18 +53,18 @@ type:
 # Testing
 # -------------------------------------------------------------------------
 
-test:
-    @uv run pytest tests/ -v
-
-test-parallel:
-    @uv run pytest tests/ -v -n auto
-
-coverage:
-    @uv run pytest tests/ \
-        --cov=src \
-        --cov-report=term-missing \
-        --cov-report=html \
-        --cov-report=xml
+#test:
+#    @uv run pytest tests/ -v
+#
+#test-parallel:
+#    @uv run pytest tests/ -v -n auto
+#
+#coverage:
+#    @uv run pytest tests/ \
+#        --cov=src \
+#        --cov-report=term-missing \
+#        --cov-report=html \
+#        --cov-report=xml
 
 # -------------------------------------------------------------------------
 # Pre-commit
@@ -83,20 +87,6 @@ sync:
 update:
     @uv lock --upgrade
     @uv sync --extra dev --extra test
-
-# -------------------------------------------------------------------------
-# Docs (optional)
-# -------------------------------------------------------------------------
-{% if include_docs %}
-docs-serve:
-    @uv run mkdocs serve
-
-docs-build:
-    @uv run mkdocs build
-
-docs-deploy:
-    @uv run mkdocs gh-deploy --force
-{% endif %}
 
 # -------------------------------------------------------------------------
 # Build & Publish
@@ -124,9 +114,10 @@ clean:
 
 ci:
     @just mdformat-check
+    @just djlint
     @just lint
     @just type
-    @just test
+    # tests are not present in this template project; skip running tests
     @just precommit
 
 # -------------------------------------------------------------------------
@@ -144,5 +135,5 @@ doctor:
     @uv run pytest --version
     @echo ""
     @echo "=== Project ==="
-    @echo "Package: {{ package_name }}"
-    @echo "Python: >= {{ python_min_version }}"
+    @echo "Package: python_project_template"
+    @echo "Python: >= 3.11"
