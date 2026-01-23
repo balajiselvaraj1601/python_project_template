@@ -10,7 +10,6 @@ _min_copier_version: "9.11.2"
 _subdirectory: template
 
 # Jinja extensions enabled for rendering templates. Add extensions
-# here only when template logic requires them.
 _jinja_extensions:
   - jinja2_time.TimeExtension
   - jinja2.ext.do
@@ -146,17 +145,13 @@ github_actions_python_versions:
 # safe; failing tasks should not leave the repository in a broken state.
 _tasks:
   - ["git", "init"]
-  - ["pip", "install", "--upgrade", "pip"]
-  - ["pip", "install", "uv"]
-  - ["uv", "sync", "--extra", "dev", "--extra", "test"]
-  - ["uv", "run", "pre-commit", "install"]
-  - command: uv run pre-commit run --all-files || true
-  - ["git", "add", "-A"]
-  - ["git", "commit", "--no-verify", "-m", "Initial commit from template"]
-  - ["git", "branch", "-M", "main"]
+  - command: just --list
+  - command: just install
+  - command: just fix
   - command: echo "✅ Project {{ project_name }} created successfully!"
   - command: echo "📁 Location $(pwd)"
   - command: echo "🚀 Run 'just ci' to verify everything works"
+  - command: just ci
 
 # -------------------------------------------------------------------------
 # Template-only exclusions
