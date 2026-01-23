@@ -151,13 +151,13 @@ github_actions_python_versions:
 # safe; failing tasks should not leave the repository in a broken state.
 _tasks:
   - ["git", "init"]
-  - ["git", "branch", "-M", "main"]
   - ["uv", "sync"]
+  - command: uv run pip install -e '.[dev,test]' || true
   - ["uv", "run", "pre-commit", "install"]
-  - ["git", "add", "-A"]
   - command: uv run pre-commit run --all-files || true
   - ["git", "add", "-A"]
-  - ["git", "commit", "-m", "Initial commit from template"]
+  - ["git", "commit", "--no-verify", "-m", "Initial commit from template"]
+  - ["git", "branch", "-M", "main"]
   - command: echo "✅ Project {{ project_name }} created successfully!"
   - command: echo "📁 Location $(pwd)"
   - command: echo "🚀 Run 'just ci' to verify everything works"

@@ -27,7 +27,7 @@ A modern, opinionated [Copier](https://copier.readthedocs.io/) template for Pyth
 uv tool install copier
 
 # Generate a new project from this template
-copier copy gh:YOUR_USERNAME/python_project_template my-new-project
+copier copy gh:balajiselvaraj1601/python_project_template my-new-project
 
 # Navigate to your new project
 cd my-new-project
@@ -39,7 +39,7 @@ just ci
 
 ## What Gets Generated
 
-```
+````
 my-new-project/
 ├── .github/
 │   ├── workflows/
@@ -81,7 +81,7 @@ cd my-new-project
 
 # Run the recommended checks
 just ci
-```
+````
 
 ## What Gets Generated
 

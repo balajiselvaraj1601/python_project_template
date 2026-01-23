@@ -182,6 +182,10 @@ Thumbs.db
 *.py.backup
 *.ipynb.backup
 
+# Temporary folder
+temp_*/
+tmp_*/
+
 # Temporary files
 *.tmp
 *.temp
