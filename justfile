@@ -49,18 +49,18 @@ type:
 # Testing
 # -------------------------------------------------------------------------
 
-#test:
-#    @uv run pytest tests/ -v
-#
-#test-parallel:
-#    @uv run pytest tests/ -v -n auto
-#
-#coverage:
-#    @uv run pytest tests/ \
-#        --cov=src \
-#        --cov-report=term-missing \
-#        --cov-report=html \
-#        --cov-report=xml
+test:
+   @uv run pytest tests/ -v
+
+test-parallel:
+   @uv run pytest tests/ -v -n auto
+
+coverage:
+   @uv run pytest tests/ \
+       --cov=src \
+       --cov-report=term-missing \
+       --cov-report=html \
+       --cov-report=xml
 
 # -------------------------------------------------------------------------
 # Pre-commit
@@ -112,7 +112,7 @@ ci:
     @just mdformat-check
     @just lint
     @just type
-    # tests are not present in this template project; skip running tests
+    @just test
     @just precommit
 
 # -------------------------------------------------------------------------

@@ -34,10 +34,10 @@ def test_calculate_mean_simple() -> None:
     assert calculate_mean([1.0, 2.0, 3.0]) == 2.0
 
 def test_calculate_mean_empty_list_raises() -> None:
-    """Test that empty list raises ValueError."""
+    """Test that empty list raises ValueError.
     with pytest.raises(ValueError, match="empty list"):
         calculate_mean([])
-```
+
         >>> calculate_mean([1.0, 2.0, 3.0])
         2.0
     """
@@ -199,7 +199,3 @@ def process_dataset(
 - Focus on constructive feedback
 - Help others learn and grow
 - Assume good intentions
-
----
-
-**Remember**: Good code is code that others (and future you) can understand and maintain. When in doubt, choose clarity over cleverness.
