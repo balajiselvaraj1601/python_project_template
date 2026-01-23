@@ -38,10 +38,6 @@ mdformat:
 mdformat-check:
     @uv run sh -c 'files=$(git ls-files --exclude-standard "*.md"); if [ -n "$files" ]; then printf "%s\n" $files | xargs mdformat --check; else echo "No markdown files to check."; fi'
 
-# Reformat Jinja templates under `template/`
-djlint:
-    @uv run sh -c 'find template -type f -name "*.jinja" -print0 | xargs -0 -n 50 uv run djlint --reformat --extension jinja || true'
-
 # -------------------------------------------------------------------------
 # Type checking
 # -------------------------------------------------------------------------
@@ -114,7 +110,6 @@ clean:
 
 ci:
     @just mdformat-check
-    @just djlint
     @just lint
     @just type
     # tests are not present in this template project; skip running tests

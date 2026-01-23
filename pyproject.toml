@@ -32,6 +32,10 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Typing :: Typed",
 ]
+dependencies = [
+    "copier>=9.11.2",
+    "jinja2-time>=0.2.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/your-org/python-project-template"
@@ -45,7 +49,7 @@ Issues = "https://github.com/your-org/python-project-template/issues"
 [project.optional-dependencies]
 
 dev = [
-    "copier>=9.0.0",
+    "copier>=9.11.2",
     "pre-commit>=3.7.0",
     "ruff>=0.14.0",
     "basedpyright>=1.21.0",

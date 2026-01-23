@@ -8,7 +8,7 @@ A modern, opinionated [Copier](https://copier.readthedocs.io/) template for Pyth
 - ⚡ **Modern Tooling** - uv, Ruff, BasedPyright, pytest
 - 🧠 **Copilot-Optimized** - Structure and docs designed for AI assistance
 - 🎯 **Type Safe** - Strict typing enforced by default
-- 📊 **Testing Ready** - Unit tests + optional property-based testing with Hypothesis
+- 📊 **Testing Ready** - Comprehensive unit tests
 - 🔄 **CI/CD Included** - GitHub Actions + Renovate for dependency management
 - 📦 **Best Practices** - src/ layout, locked dependencies, coverage reporting
 
@@ -100,7 +100,7 @@ When generating a project, Copier will prompt for:
 - **GitHub Username**: For repository URLs
 - **Python Version**: Minimum supported version (3.11+)
 - **License**: Project license
-- **Optional Features**: Documentation, Hypothesis testing, pandas/NumPy support
+- **Optional Features**: Documentation, pandas/NumPy support
 
 ## Included Tools
 
@@ -110,7 +110,6 @@ Generated projects include these tools:
 - **Ruff** - Fast linter and formatter
 - **BasedPyright** - Type checker
 - **pytest** - Testing framework
-- **Hypothesis** - Property-based testing (optional)
 - **MkDocs** - Documentation (optional)
 - **pre-commit** - Git hooks
 - **GitHub Actions** - CI/CD
@@ -293,7 +292,7 @@ uv tool install copier
 
 Check:
 
-1. Copier version >= 9.0.0
+1. Copier version >= 9.11.2
 1. Valid Jinja2 syntax in .jinja files
 1. No circular references in copier.yml
 
@@ -309,7 +308,6 @@ Check:
 - **v1.0.0** (2026-01-23): Initial release
   - uv-first workflow
   - Ruff + BasedPyright
-  - Hypothesis support
   - MkDocs documentation
   - GitHub Actions CI
   - Renovate integration

@@ -6,7 +6,7 @@
 # -------------------------------------------------------------------------
 # Minimal required Copier version for this template and where the
 # template lives inside the repository.
-_min_copier_version: "9.0.0"
+_min_copier_version: "9.11.2"
 _subdirectory: template
 
 # Jinja extensions enabled for rendering templates. Add extensions
@@ -101,11 +101,6 @@ license:
 include_docs:
   type: bool
   help: Include MkDocs documentation setup?
-  default: true
-
-include_hypothesis:
-  type: bool
-  help: Include Hypothesis for property-based testing?
   default: true
 
 include_pandas_support:

@@ -31,7 +31,6 @@ A complete, production-ready Copier template for Python data-science libraries f
 
 - ✅ `template/tests/test_imports.py.jinja` - Import sanity checks
 - ✅ `template/tests/unit/test_core.py.jinja` - Unit tests
-- ✅ `template/tests/properties/test_properties.py.jinja` - Hypothesis property tests
 
 #### CI/CD
 
@@ -60,7 +59,6 @@ A complete, production-ready Copier template for Python data-science libraries f
 - **Ruff** for formatting and linting (replacing black + flake8)
 - **BasedPyright** for strict type checking
 - **pytest** with xdist for parallel testing
-- **Hypothesis** for property-based testing (optional)
 - **just** for task running
 - **MkDocs Material** for documentation (optional)
 
@@ -89,8 +87,7 @@ A complete, production-ready Copier template for Python data-science libraries f
 
 - NumPy typing patterns
 - pandas support (optional)
-- Hypothesis for numerical testing
-- Property-based test examples
+- Comprehensive unit testing
 
 ## Usage
 
@@ -132,7 +129,7 @@ This will:
 | **Speed** | uv (10-100x faster) | pip/poetry |
 | **Type Checking** | BasedPyright (strict) | mypy (permissive) |
 | **Linting** | Ruff (1 tool) | black + flake8 + isort |
-| **Testing** | Property-based + unit | Unit only |
+| **Testing** | Unit tests with pytest | Unit only |
 | **AI Optimization** | Explicit Copilot guidance | None |
 | **Updates** | Copier (smart merge) | Manual |
 | **DS Focus** | NumPy/pandas patterns | Generic |
@@ -142,7 +139,7 @@ This will:
 
 1. **Library-First**: No application boilerplate
 1. **Type Safety**: Catches errors at dev time
-1. **Property Testing**: Finds edge cases automatically
+1. **Comprehensive Testing**: Unit tests with pytest
 1. **Deterministic**: Locked dependencies for reproducibility
 1. **Fast CI**: Parallel tests, cached dependencies
 1. **Maintainable**: Renovate keeps dependencies fresh
@@ -212,7 +209,6 @@ Regular maintenance tasks:
 
 - [ ] Update tool versions quarterly
 - [ ] Test with new Python releases
-- [ ] Review Hypothesis strategies
 - [ ] Update badges and links
 - [ ] Test copier update workflow
 
@@ -231,5 +227,5 @@ ______________________________________________________________________
 
 **Created**: January 23, 2026
 **Template Version**: 1.0.0
-**Copier Version**: 9.0.0+
+**Copier Version**: 9.11.2+
 **Python Version**: 3.11+
