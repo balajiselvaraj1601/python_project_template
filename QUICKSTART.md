@@ -63,7 +63,8 @@ When you make changes to the template:
    just ci
    ```
 
-2. Update existing projects:
+1. Update existing projects:
+
    ```bash
    cd existing-project
    copier update
@@ -84,9 +85,11 @@ When you make changes to the template:
    ]
    ```
 
-2. Add configuration section if needed
-3. Update `template/justfile.jinja` with new command
-4. Update `.github/workflows/ci.yml.jinja` if CI check needed
+1. Add configuration section if needed
+
+1. Update `template/justfile.jinja` with new command
+
+1. Update `.github/workflows/ci.yml.jinja` if CI check needed
 
 ### Adding a New Question
 
@@ -181,15 +184,15 @@ uv tool install copier
 Check:
 
 1. Copier version >= 9.0.0
-2. Valid Jinja2 syntax in .jinja files
-3. No circular references in copier.yml
+1. Valid Jinja2 syntax in .jinja files
+1. No circular references in copier.yml
 
 ### Generated Project Tests Fail
 
 1. Check Python version matches minimum
-2. Verify uv sync completed successfully
-3. Check for tool compatibility issues
-4. Review recent tool updates
+1. Verify uv sync completed successfully
+1. Check for tool compatibility issues
+1. Review recent tool updates
 
 ## Version History
 

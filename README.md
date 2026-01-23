@@ -116,9 +116,9 @@ just ci         # Run full CI checks
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Test changes locally: `copier copy . /tmp/test-project && cd /tmp/test-project && just ci`
-4. Open a pull request
+1. Create a feature branch
+1. Test changes locally: `copier copy . /tmp/test-project && cd /tmp/test-project && just ci`
+1. Open a pull request
 
 See [QUICKSTART.md](QUICKSTART.md) for detailed maintenance instructions.
 

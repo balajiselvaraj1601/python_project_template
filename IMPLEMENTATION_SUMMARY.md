@@ -118,34 +118,34 @@ cd /home/ray/personal/python_project_template
 This will:
 
 1. Generate a project with defaults
-2. Generate a project with all features
-3. Run full CI checks
-4. Test the update workflow
-5. Verify structure and dependencies
+1. Generate a project with all features
+1. Run full CI checks
+1. Test the update workflow
+1. Verify structure and dependencies
 
 ## What Makes This Special
 
 ### vs Other Templates
 
-| Feature             | This Template             | Others                 |
+| Feature | This Template | Others |
 | ------------------- | ------------------------- | ---------------------- |
-| **Speed**           | uv (10-100x faster)       | pip/poetry             |
-| **Type Checking**   | BasedPyright (strict)     | mypy (permissive)      |
-| **Linting**         | Ruff (1 tool)             | black + flake8 + isort |
-| **Testing**         | Property-based + unit     | Unit only              |
-| **AI Optimization** | Explicit Copilot guidance | None                   |
-| **Updates**         | Copier (smart merge)      | Manual                 |
-| **DS Focus**        | NumPy/pandas patterns     | Generic                |
-| **Lockfiles**       | uv.lock (PEP 751)         | Various                |
+| **Speed** | uv (10-100x faster) | pip/poetry |
+| **Type Checking** | BasedPyright (strict) | mypy (permissive) |
+| **Linting** | Ruff (1 tool) | black + flake8 + isort |
+| **Testing** | Property-based + unit | Unit only |
+| **AI Optimization** | Explicit Copilot guidance | None |
+| **Updates** | Copier (smart merge) | Manual |
+| **DS Focus** | NumPy/pandas patterns | Generic |
+| **Lockfiles** | uv.lock (PEP 751) | Various |
 
 ### Design Highlights
 
 1. **Library-First**: No application boilerplate
-2. **Type Safety**: Catches errors at dev time
-3. **Property Testing**: Finds edge cases automatically
-4. **Deterministic**: Locked dependencies for reproducibility
-5. **Fast CI**: Parallel tests, cached dependencies
-6. **Maintainable**: Renovate keeps dependencies fresh
+1. **Type Safety**: Catches errors at dev time
+1. **Property Testing**: Finds edge cases automatically
+1. **Deterministic**: Locked dependencies for reproducibility
+1. **Fast CI**: Parallel tests, cached dependencies
+1. **Maintainable**: Renovate keeps dependencies fresh
 
 ## Next Steps
 
@@ -221,11 +221,11 @@ Regular maintenance tasks:
 Issues or questions? Check:
 
 1. `QUICKSTART.md` for common tasks
-2. `instructions.md` for design rationale
-3. `test-template.sh` for validation
-4. Generated `CONTRIBUTING.md` for patterns
+1. `instructions.md` for design rationale
+1. `test-template.sh` for validation
+1. Generated `CONTRIBUTING.md` for patterns
 
----
+______________________________________________________________________
 
 **Status**: ✅ Complete and ready for production use
 

@@ -1,18 +1,21 @@
----
+______________________________________________________________________
+
 name: CI Fixer
 id: ci-fixer
 summary: "Expert agent that locates, diagnoses, and proposes fixes for failing CI workflows using project configs and best practices."
 author: github-copilot
 permissions:
-  - contents: write
-  - pull_requests: write
-  - checks: read
-  - actions: read
-triggers:
-  - manual
-  - issue_comment
-  - scheduled: daily
----
+
+- contents: write
+- pull_requests: write
+- checks: read
+- actions: read
+  triggers:
+- manual
+- issue_comment
+- scheduled: daily
+
+______________________________________________________________________
 
 ## Purpose
 
@@ -33,31 +36,32 @@ Fix CI failures across this repository by using the repository's existing config
    - List recent failed workflow runs via GitHub Checks API or by reading workflow run outputs.
    - Identify affected jobs, error messages, and files referenced in logs.
 
-2. Map failures to repo sources
+1. Map failures to repo sources
 
    - Search for matching files in `.github/workflows`, `pyproject.toml`, `tests/`, and any build scripts.
    - Prefer edits that use existing configs (e.g., use test commands from `pyproject.toml` or `justfile`).
 
-3. Reproduce locally
+1. Reproduce locally
 
    - Determine commands to run locally (e.g., `python -m pytest -q` or the `tool.poetry.scripts` test command). If multiple environments are used in matrix, prioritize the failing matrix entry.
 
-4. Apply fixes iteratively
+1. Apply fixes iteratively
 
    - Try minimal config or dependency adjustments first (caching keys, correct paths, fixed test invocation, adjust Python version matrix to match supported versions in `pyproject.toml`).
    - If code changes required, make small, tested commits.
 
-5. Verify
+1. Verify
 
    - Run linters (flake8/ruff/black) if configured in `pyproject.toml`.
    - Run unit tests locally and ensure the failing job passes.
 
-6. Create PR
+1. Create PR
 
    - Open a draft PR with: summary of failure, root cause analysis, changes made, commands used to verify, and CI run links.
    - Include suggested reviewers and label `ci`.
 
-7. Post back
+1. Post back
+
    - Comment on the original failing workflow or issue with a link to the PR and a short explanation.
 
 ## Constraints & Best Practices

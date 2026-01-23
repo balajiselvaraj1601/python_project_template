@@ -32,6 +32,12 @@ lint:
 fix:
     @uv run ruff check --fix .
 
+mdformat:
+    @uv run mdformat .
+
+mdformat-check:
+    @uv run mdformat --check .
+
 # -------------------------------------------------------------------------
 # Type checking
 # -------------------------------------------------------------------------
@@ -117,6 +123,7 @@ clean:
 # -------------------------------------------------------------------------
 
 ci:
+    @just mdformat-check
     @just lint
     @just type
     @just test

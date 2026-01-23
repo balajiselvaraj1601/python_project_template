@@ -49,6 +49,7 @@ dev = [
     "pre-commit>=3.7.0",
     "ruff>=0.14.0",
     "basedpyright>=1.21.0",
+    "mdformat>=0.7.0",
 ]
 
 docs = [

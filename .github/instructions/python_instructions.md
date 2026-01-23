@@ -3,7 +3,7 @@
 These rules define how Python code must be written, generated, reviewed, and validated for projects created from this template.
 They combine repository-specific constraints with the authoritative Python standards used by Copilot assistance.
 
----
+______________________________________________________________________
 
 ## 1. Repository Context (Read This First)
 
@@ -19,7 +19,7 @@ This repository is a **Copier template**.
 - `template/src/{{ package_name }}/core.py.jinja`
 - `template/tests/unit/test_core.py.jinja`
 
----
+______________________________________________________________________
 
 ## 2. Local Verification (Generated Project)
 
@@ -38,7 +38,7 @@ just ci
 
 Generated projects are expected to pass **strict linting and typing**.
 
----
+______________________________________________________________________
 
 ## 3. Target Environment
 
@@ -46,7 +46,7 @@ Generated projects are expected to pass **strict linting and typing**.
 - CPython only
 - Do not assume optional runtime dependencies unless enabled via `copier.yml`
 
----
+______________________________________________________________________
 
 ## 4. Core Design Principles
 
@@ -56,7 +56,7 @@ Generated projects are expected to pass **strict linting and typing**.
 - Prefer composition and dependency injection
 - Write code for the next maintainer, not the original author
 
----
+______________________________________________________________________
 
 ## 5. Formatting & Naming
 
@@ -77,15 +77,20 @@ Generated projects are expected to pass **strict linting and typing**.
 - Classes: `PascalCase`
 - Names must be descriptive; avoid vague names like `data`, `info`, `value`
 
----
+______________________________________________________________________
 
 ## 6. Typing (Mandatory for Public APIs)
 
 - Type hints are required for all public functions, methods, and classes
+
 - Avoid `Any`
+
 - Prefer built-in generics (`list[str]`, `dict[str, int]`)
+
 - Use `Optional[T]` only when `None` is meaningful
+
 - Use `TypeVar` for generics
+
 - NumPy (when enabled):
 
   - `import numpy.typing as npt`
@@ -93,7 +98,7 @@ Generated projects are expected to pass **strict linting and typing**.
 
 Strict type checking is enforced via **BasedPyright**.
 
----
+______________________________________________________________________
 
 ## 7. Docstrings (Google Style — Mandatory)
 
@@ -102,7 +107,9 @@ All public modules, classes, functions, and methods must include **Google-style 
 ### Rules
 
 - One-line imperative summary
+
 - Blank line after the summary
+
 - Use sections when applicable:
 
   - `Args`
@@ -112,7 +119,7 @@ All public modules, classes, functions, and methods must include **Google-style 
 
 - Describe behavior and intent, not implementation details
 
----
+______________________________________________________________________
 
 ## 8. Functions
 
@@ -146,7 +153,7 @@ def normalize_email(email: str) -> str:
     return normalized
 ```
 
----
+______________________________________________________________________
 
 ## 9. Classes
 
@@ -161,7 +168,7 @@ Prefer **composition over inheritance**.
 - Document all public methods
 - Avoid hidden or global state
 
----
+______________________________________________________________________
 
 ### 9.1 Data Classes
 
@@ -194,7 +201,7 @@ class User:
     is_active: bool = True
 ```
 
----
+______________________________________________________________________
 
 ### 9.2 Service / Behavior Classes
 
@@ -233,7 +240,7 @@ class UserService:
         return user
 ```
 
----
+______________________________________________________________________
 
 ## 10. Imports, Logging & Side Effects
 
@@ -242,10 +249,11 @@ class UserService:
 - Order:
 
   1. Standard library
-  2. Third-party
-  3. Local modules
+  1. Third-party
+  1. Local modules
 
 - Prefer absolute imports
+
 - No wildcard imports
 
 ### Logging
@@ -259,7 +267,7 @@ class UserService:
 - Avoid side effects at import time
 - Defer I/O and expensive operations to functions or explicit entry points
 
----
+______________________________________________________________________
 
 ## 11. Module Metadata & Public API
 
@@ -268,7 +276,7 @@ class UserService:
 - Update `__all__` when adding or removing public symbols
 - Avoid unused imports and variables
 
----
+______________________________________________________________________
 
 ## 12. Testing
 
@@ -278,10 +286,12 @@ class UserService:
   - `tests/properties/` (optional)
 
 - Test files and functions start with `test_`
+
 - Test functions return `-> None`
+
 - Prefer simple `assert` statements
 
----
+______________________________________________________________________
 
 ## 13. Prohibited Patterns & Common Pitfalls
 
@@ -297,10 +307,10 @@ class UserService:
 - Keep workflows and `justfile.jinja` aligned so `just ci` mirrors CI
 - Use `uv` for pinned tool execution
 
----
+______________________________________________________________________
 
 ## 14. Final Rule
 
 If code is unclear, surprising, or difficult to reason about, it does not meet the standards of this template — even if it passes all checks.
 
----
+______________________________________________________________________
