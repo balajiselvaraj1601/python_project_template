@@ -1,26 +1,46 @@
-{% if include_docs %}# {{ project_name }}
+{% if include_docs %}
+# {{ project_name }}
 
 {{ project_description }}
 
+---
+
 ## Overview
 
-This library provides high-quality, well-tested tools for data science workflows.
+**{{ project_name }}** is a modern Python library that provides **high-quality,
+well-tested, and well-documented tools** designed for reliable and composable
+data science workflows.
+
+The library emphasizes:
+
+- Clear and explicit APIs
+- Strong type safety
+- Predictable behavior
+- Long-term maintainability
+
+---
 
 ## Installation
 
-Install using pip or uv:
+{{ project_name }} can be installed using either `pip` or `uv`.
+
+### Using pip
 
 ```bash
 pip install {{ package_name }}
 ```
 
-Or with uv:
+### Using uv
 
 ```bash
 uv add {{ package_name }}
 ```
 
-## Quick Example
+---
+
+## Quick Start
+
+Below is a minimal example demonstrating basic usage:
 
 ```python
 from {{ package_name }} import example_function
@@ -29,17 +49,50 @@ result = example_function(42)
 print(result)
 ```
 
-## Features
+This example illustrates the typical import and execution pattern used
+throughout the library.
 
-- ✅ **Type Safe**: Fully typed with strict type checking
-- ✅ **Well Tested**: Comprehensive test coverage
-- ✅ **Modern Python**: Requires Python {{ python_min_version }}+
-- ✅ **Fast**: Optimized for performance
-- ✅ **Documented**: Clear API documentation
+---
 
-## Next Steps
+## Key Features
 
-- [Design Philosophy](design.md) - Understand the design decisions
-- [API Reference](api.md) - Detailed API documentation
-- [GitHub Repository](https://github.com/{{ github_username }}/{{ project_slug }}) - Source code and issues
+- ✅ **Type Safe**
+  Fully typed APIs with strict type checking for improved correctness and IDE
+  support.
+
+- ✅ **Well Tested**
+  Comprehensive unit tests ensure reliability and safe refactoring.
+
+- ✅ **Modern Python**
+  Built for Python {{ python_min_version }}+ and leverages modern language features.
+
+- ✅ **Performance-Oriented**
+  Designed with efficiency in mind, without sacrificing readability.
+
+- ✅ **Well Documented**
+  Clear docstrings and generated API documentation.
+
+---
+
+## Documentation
+
+To learn more, explore the following sections:
+
+- **[Design Philosophy](design.md)**
+  Learn about the architectural principles and design decisions.
+
+- **[API Reference](api.md)**
+  Detailed, auto-generated documentation for all public APIs.
+
+- **[GitHub Repository](https://github.com/{{ github_username }}/{{ project_slug }})**
+  Source code, issue tracking, and contribution history.
+
+---
+
+## Getting Involved
+
+Contributions, bug reports, and feature requests are welcome.
+Please refer to the project’s contributing guidelines and code of conduct
+before participating.
+
 {% endif %}

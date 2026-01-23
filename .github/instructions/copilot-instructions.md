@@ -1,99 +1,275 @@
-# Copilot / AI Agent Instructions
+# Copilot / AI Agent Instructions for This Repository
 
-This repository is a Copier template for generating Python projects. As an AI coding agent, your primary goal is to update the template and ensure generated projects work reliably. Focus on template-specific flows, not runtime services.
+This repository is a **Copier template** for generating Python projects.
+This document provides **clear, consistent, and authoritative guidance** for AI coding agents working on this repository.
 
-## Order of Usage: Instructions, Skills, and Abilities
+The primary objective is **template correctness and reliability** — not runtime behavior of generated projects.
 
-Follow this hierarchical order when working on tasks:
+**Scope**
 
-1. **Consult Instruction Files First**: Always start by reading and following the relevant instruction files in this `.github/instructions/` directory. These provide authoritative guidance on coding standards, formatting, and best practices.
+   These instructions apply to **this template repository itself**, not to projects generated from it.
 
-1. **Gather Context with Skills**: Use your available skills (tools) to explore the repository, read files, run commands, and validate changes. Prioritize gathering complete context before making edits.
+---
 
-1. **Apply Changes**: Make targeted edits based on instructions and gathered context. Use skills to implement and test changes iteratively.
+## 1. Core Objective
 
-1. **Validate and Iterate**: Run tests, linters, and validations using skills. Fix any issues and re-validate until successful.
+As an AI coding agent, your responsibilities are to:
 
-## Repository Overview
+- Maintain and evolve the **Copier template**
+- Ensure **generated projects function correctly**
+- Follow **instruction files strictly and hierarchically**
+- Validate changes in **generated output**, not only in template files
 
-- **Big Picture**: This repo produces new projects from files in `template/` using `copier` (see [copier.yml](copier.yml)). Key artifacts live under `template/` (source code, tests, CI Jinja templates). The template includes agent configurations for CI fixing in generated projects.
+Do **not** optimize for production runtime behavior beyond what the template explicitly defines.
 
-- **Key Files to Know**:
+---
 
-  - [README.md](README.md), [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) for high-level workflows and quick reference.
-  - [pyproject.toml](pyproject.toml) for dev dependencies and tooling.
-  - `template/` for examples of generated content.
-  - `.github/instructions/` for specialized guidance.
+## 2. Instruction Priority Model (Mandatory)
 
-## Using Instruction Files
+You must follow instructions in the order below.
+Higher-priority sources **override** lower-priority ones.
 
-This repository provides specialized instruction files for different aspects of development. Read and apply them in this order of priority:
+### Priority Order
 
-1. **copilot-instructions.md** (this file): General guidance for AI agents on the template repository. Use this as the starting point for any task.
+1. **Instruction Files**
+   Located in `.github/instructions/`
+   These are the **source of truth**.
 
-1. **python_instructions.md**: Authoritative rules for writing Python code. Consult this for all Python-related changes, including code in `template/src/` and `template/tests/`.
+2. **Repository Context**
+   `README.md`, `IMPLEMENTATION_SUMMARY.md`, `copier.yml`
 
-1. **markdown-instructions.md**: Guidelines for Markdown files and templates. Use for editing `.md.jinja` files in `template/docs/`, `template/README.md.jinja`, etc.
+3. **Skills and Tools**
+   Used to explore, implement, and validate changes
 
-1. **ci-fixer.agent.md**: Specialized instructions for diagnosing and fixing CI failures. Refer to this for workflow-related issues.
+4. **Assumptions**
+   Use only when explicitly permitted
 
-Always read the full relevant instruction file before proceeding with a task. If multiple apply, follow them in the order above, with higher-priority files taking precedence.
+---
 
-## Using Skills and Tools
+## 3. Required Workflow for All Tasks
 
-Your skills (tools) allow you to interact with the repository. Use them strategically:
+Follow this workflow **for every task**, without exception.
 
-- **Exploration Skills** (read_file, list_dir, grep_search, semantic_search, file_search): Use these first to understand the codebase. Read key files, search for patterns, and map the structure before making changes.
+### Step 1: Read Instructions First
 
-- **Execution Skills** (run_in_terminal, runTests, configure_python_environment, etc.): Use for running commands, tests, and validations. Always configure the environment (e.g., Python) before executing Python-related tasks.
+- Identify all relevant instruction files
+- Read them **completely** before making changes
+- Resolve conflicts using the priority model
 
-- **Editing Skills** (replace_string_in_file, create_file, etc.): Apply changes only after gathering full context and following instructions. Make minimal, targeted edits.
+---
 
-- **Validation Skills** (runTests, get_errors, run_in_terminal for lints/tests): Run after every substantive change. Iterate on fixes until validation passes.
+### Step 2: Gather Context
 
-Prioritize local validation over assuming correctness. For template changes, generate a test project and validate in the generated context.
+Use exploration tools to understand the repository:
 
-## Primary Workflows
+- Inspect the `template/` directory
+- Review related configuration files
+- Search for existing patterns and conventions
 
-### Iterating on the Template
+Do **not** modify files before understanding how they are used.
 
-1. Read relevant instruction files.
-1. Explore the current template structure using exploration skills.
-1. Make targeted edits to `template/` files.
-1. Generate a test project: `copier copy . /tmp/test-project`
-1. Validate in the generated project: `cd /tmp/test-project && just ci`
-1. Fix issues and re-validate.
+---
 
-### Automated Validation
+### Step 3: Apply Targeted Changes
 
-Run `./test-template.sh` to automate template generation and basic structure checks.
+- Make minimal, intentional edits
+- Preserve existing structure and conventions
+- Avoid broad refactors unless explicitly requested
 
-### Quick Verification
+---
 
-For generated projects, use `just fmt`, `just lint`, `just type`, `just test`, or `just ci`.
+### Step 4: Validate and Iterate
 
-## Tooling Conventions
+Validation is **mandatory**.
 
-- **Package Management**: `uv` for dependencies and CLI tools.
-- **Linting/Type Checking**: `ruff` and `basedpyright`.
-- **Testing**: `pytest`.
-- **Formatting**: `ruff format`.
-- **Task Running**: `just` (in generated projects).
+- Generate a test project
+- Run formatting, linting, type checks, and tests
+- Fix failures and re-run validation
 
-## Template Patterns to Preserve
+Never assume correctness without validation.
 
-- **Layout**: Use `src/` structure in templates.
-- **Conditionals**: Minimal Jinja with feature flags from `copier.yml`.
-- **CI**: Mirror checks in `template/.github/workflows/ci.yml.jinja`, `justfile.jinja`, and `pyproject.toml.jinja`.
-- **Optional Features**: Controlled by `copier.yml` prompts (e.g., `include_docs`, `include_numpy`).
+---
 
-## Common Pitfalls
+## 4. Repository Overview
 
-- Editing `pyproject.toml.jinja` without updating `copier.yml` breaks dependency sets.
-- Changing CI without updating `justfile` tasks.
-- Not validating in generated projects.
+### Big Picture
 
-## Examples of Edits
+- Projects are generated using **Copier**
+- All generated content originates from `template/`
+- Template behavior is controlled by `copier.yml`
+- Generated projects include CI, tooling, and agent configs
 
-- **Add Dependency**: Update `template/pyproject.toml.jinja` and `template/justfile.jinja`, then validate.
-- **Add Feature**: Add `copier.yml` prompt, use `{% if %}` in templates, validate generation.
+---
+
+### Key Files and Directories
+
+- `copier.yml` — Template prompts and feature flags
+- `template/` — Source of all generated files
+- `.github/instructions/` — Authoritative AI guidance
+- `pyproject.toml` — Tooling for the template repository
+- `README.md`, `IMPLEMENTATION_SUMMARY.md` — High-level context
+
+---
+
+## 5. Instruction Files and Their Roles
+
+Read and apply these files **in order**:
+
+### 1. `copilot-instructions.md` (this file)
+
+- Global rules for AI agents
+- Starting point for every task
+
+---
+
+### 2. `python_instructions.md`
+
+- Authoritative Python rules
+- Applies to `template/src/` and `template/tests/`
+
+---
+
+### 3. `markdown-instructions.md`
+
+- Rules for Markdown and `.md.jinja` files
+- Required for all documentation changes
+
+---
+
+### 4. `ci-fixer.agent.md`
+
+- Specialized CI troubleshooting guidance
+- Use only for workflow-related issues
+
+---
+
+## 6. Using Skills and Tools
+
+Tools exist to ensure **understanding, correctness, and validation**.
+
+### Exploration Skills
+
+- Read files and directories
+- Search for patterns
+- Understand before editing
+
+---
+
+### Editing Skills
+
+- Apply focused, minimal changes
+- Preserve structure and conventions
+
+---
+
+### Execution and Validation Skills
+
+- Run tests and linters
+- Validate CI and generated projects
+- Fix issues before completion
+
+---
+
+## 7. Primary Workflows
+
+### 7.1 Iterating on the Template
+
+1. Read instruction files
+2. Explore the `template/` structure
+3. Apply targeted changes
+4. Generate a test project:
+   ```bash
+   copier copy . /tmp/test-project
+   ```
+5. Validate generated output:
+   ```bash
+   cd /tmp/test-project && just ci
+   ```
+6. Fix issues and repeat validation
+
+---
+
+### 7.2 Automated Template Validation
+
+Run:
+
+```bash
+./test-template.sh
+```
+
+---
+
+### 7.3 Quick Checks in Generated Projects
+
+- `just fmt`
+- `just lint`
+- `just type`
+- `just test`
+- `just ci`
+
+---
+
+## 8. Tooling Conventions
+
+Generated projects use:
+
+- **Dependencies**: `uv`
+- **Formatting**: `ruff format`
+- **Linting**: `ruff`
+- **Type Checking**: `basedpyright`
+- **Testing**: `pytest`
+- **Task Runner**: `just`
+
+Template changes must remain compatible with these tools.
+
+---
+
+## 9. Template Patterns to Preserve
+
+- `src/`-based project layout
+- Minimal Jinja usage
+- CI consistency across:
+  - `ci.yml.jinja`
+  - `justfile.jinja`
+  - `pyproject.toml.jinja`
+- Optional features controlled by `copier.yml`
+
+---
+
+## 10. Common Failure Modes
+
+Avoid the following:
+
+- Editing `pyproject.toml.jinja` without updating `copier.yml`
+- Modifying CI without updating `justfile`
+- Skipping validation in generated projects
+- Hardcoding values instead of using template variables
+
+---
+
+## 11. Examples of Correct Changes
+
+### Add a Dependency
+
+- Update `template/pyproject.toml.jinja`
+- Update `template/justfile.jinja`
+- Validate in a generated project
+
+---
+
+### Add an Optional Feature
+
+- Add a prompt to `copier.yml`
+- Use `{% if %}` blocks in templates
+- Generate and validate output
+
+---
+
+## 12. Final Instruction to AI Models
+
+- **Read instruction files first.**
+- **Never skip validation.**
+- **Optimize for template correctness.**
+- **If unsure, explore — do not guess.**
+
+These rules are mandatory.

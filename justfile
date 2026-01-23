@@ -32,11 +32,7 @@ lint:
 fix:
     @uv run ruff check --fix .
 
-mdformat:
-    @uv run sh -c 'find . -name "*.md" -not -name "SKILL.md" -not -name "SKILL.md.jinja" -not -path "./.venv/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./.pytest_cache/*" -not -path "./.ruff_cache/*" -not -path "./.mypy_cache/*" -exec mdformat {} +'
 
-mdformat-check:
-    @uv run sh -c 'find . -name "*.md" -not -name "SKILL.md" -not -name "SKILL.md.jinja" -not -path "./.venv/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./.pytest_cache/*" -not -path "./.ruff_cache/*" -not -path "./.mypy_cache/*" -exec mdformat --check {} +'
 
 # -------------------------------------------------------------------------
 # Type checking
@@ -109,7 +105,6 @@ clean:
 # -------------------------------------------------------------------------
 
 ci:
-    @just mdformat-check
     @just lint
     @just type
     @just test

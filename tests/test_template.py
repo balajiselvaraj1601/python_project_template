@@ -124,3 +124,23 @@ def test_update_workflow(tmp_path: Path) -> None:
     # Check user change is preserved
     updated_content = readme.read_text()
     assert "# User change" in updated_content, "Update overwrote user changes"
+
+
+def test_copy_from_github(tmp_path: Path) -> None:
+    """Test copying template directly from GitHub shortcut."""
+    target = tmp_path / "my-new-project"
+    cmd = [
+        "copier",
+        "copy",
+        "gh:balajiselvaraj1601/python_project_template",
+        str(target),
+        "--trust",
+        "--defaults",
+        "--data",
+        "project_name=GitHub Project",
+    ]
+    run_command(cmd)
+
+    # Verify structure from GitHub copy
+    assert (target / "pyproject.toml").exists(), "Missing pyproject.toml from GitHub copy"
+    assert (target / "src").is_dir(), "Missing src/ directory from GitHub copy"

@@ -1,71 +1,193 @@
-# Markdown Instructions
+# Markdown Authoring Guidelines for This Repository
 
-This repository uses Markdown files extensively for documentation, READMEs, and other textual content. As an AI coding agent, follow these guidelines when creating, editing, or generating Markdown files to ensure consistency, readability, and proper formatting.
+This repository relies heavily on **Markdown** for documentation, READMEs, and generated project files.
+This document defines **clear, consistent, and enforceable rules** that an AI model (or human contributor) must follow when **creating, editing, or generating Markdown content** for this project.
 
-## Big Picture
+The goal is **predictable structure, high readability, and correct rendering** across GitHub, MkDocs, and Copier-generated projects.
 
-Markdown files in this Copier template are primarily used for:
+---
 
-- Project documentation (README, API docs, design docs)
-- Contributing guidelines
-- License files
-- MkDocs site content
+## 1. Purpose and Scope
 
-All Markdown files in the `template/` directory are Jinja templates with `.md.jinja` extensions, allowing dynamic content generation based on Copier prompts.
+Markdown in this repository is used for:
 
-## Where to Look First
+- Project documentation (READMEs, design docs, API references)
+- Contribution and governance files
+- License and legal files
+- MkDocs-based documentation sites
+- Copier templates that generate Markdown files dynamically
 
-- [README.md](README.md) for overall project structure and quick reference
-- Existing `.md.jinja` files in `template/` for examples of templated Markdown
-- `template/mkdocs.yml.jinja` for documentation site configuration
-- `copier.yml` for available template variables
+### Important
+All Markdown files located in the `template/` directory are **Jinja templates** and use the `.md.jinja` extension.
+These files are rendered by **Copier**, not written directly to disk.
 
-## Primary Workflows
+---
 
-### Editing Template Markdown Files
+## 2. Key Files to Understand First
 
-1. **Use Jinja templating appropriately**: Leverage variables from `copier.yml` for dynamic content (e.g., `{{ package_name }}`, `{{ author_name }}`)
-1. **Maintain consistent structure**: Follow the established patterns in existing templates
-1. **Test generation**: After edits, generate a test project and verify the rendered Markdown
+Before editing or generating Markdown, review the following:
 
-### Formatting Standards
+- `README.md`
+  High-level project overview and documentation baseline
 
-- **Headers**: Use `#` for main title, `##` for sections, `###` for subsections
-- **Links**: Use relative paths for internal links, absolute URLs for external
-- **Code blocks**: Specify language for syntax highlighting (e.g., \`\`\`python)
-- **Lists**: Use consistent indentation and bullet styles
-- **Tables**: Use Markdown table syntax with proper alignment
+- `template/*.md.jinja`
+  Canonical examples of templated Markdown structure
 
-### Content Guidelines
+- `template/mkdocs.yml.jinja`
+  Documentation site configuration and navigation
 
-- **Clarity**: Write clear, concise documentation
-- **Consistency**: Use consistent terminology and formatting across files
-- **Completeness**: Ensure all sections are filled appropriately in templates
-- **Accessibility**: Use alt text for images, descriptive link text
+- `copier.yml`
+  Defines all available template variables
 
-## Tooling Conventions
+---
 
-- **Preview**: Use VS Code's Markdown preview or MkDocs for rendering
-- **Linting**: No specific Markdown linter configured, but follow common best practices
-- **Validation**: Manually review generated content for correctness
+## 3. General Markdown Rules
 
-## Template Patterns to Preserve
+### 3.1 Markdown Flavor
 
-- **Conditional content**: Use `{% if condition %}` blocks sparingly for optional sections
-- **Variable substitution**: Use `{{ variable }}` for dynamic text insertion
-- **Include other files**: Use Jinja includes if needed for reusable content
-- **Front matter**: Include YAML front matter in MkDocs pages as needed
+- Default to **CommonMark**
+- Use extensions (tables, admonitions, footnotes) **only if supported** by:
+  - GitHub
+  - MkDocs
+- Never assume a feature is supported — verify first
 
-## Common Pitfalls
+---
 
-- **Hardcoded values**: Avoid hardcoding project-specific info; use template variables
-- **Broken links**: Ensure all links work in the generated context
-- **Inconsistent formatting**: Match the style of existing Markdown files
-- **Missing alt text**: Always provide alt text for images
+### 3.2 Document Structure
 
-## Examples of Useful Edits
+- Begin every file with **one level-1 heading**
+- Do **not** skip heading levels
+- Separate sections with blank lines
+- Organize sections logically so automated tools can build a table of contents
 
-- **Add a new documentation section**: Update relevant `.md.jinja` files and `mkdocs.yml.jinja`
-- **Update README content**: Modify `template/README.md.jinja` with new features or instructions
-- **Add API documentation**: Edit `template/docs/api.md.jinja` with new endpoints or classes
-- **Update contributing guidelines**: Modify `template/CONTRIBUTING.md.jinja` for new processes
+---
+
+### 3.3 Headings
+
+- `#` — Document title (one per file)
+- `##` — Major sections
+- `###` — Subsections
+- `####` — Rarely used; avoid unless necessary
+
+---
+
+## 4. Jinja Templating Rules (Critical)
+
+Markdown files in `template/` are **Jinja templates**.
+
+### 4.1 Variable Usage
+
+- Always use variables defined in `copier.yml`
+- Never hardcode project-specific values
+
+---
+
+### 4.2 Conditional Blocks
+
+- Use conditionals **sparingly**
+- Only for optional sections
+
+---
+
+### 4.3 Includes
+
+- Use Jinja includes for reusable content
+- Do not duplicate shared documentation blocks
+
+---
+
+## 5. Formatting Standards
+
+### 5.1 Text
+
+- Write clearly and concisely
+- Prefer short paragraphs
+- Keep line length between **80–100 characters**
+- Use **bold** and *italics* sparingly
+
+---
+
+### 5.2 Lists
+
+- Prefer unordered lists
+- Use ordered lists **only when sequence matters**
+- Keep list formatting consistent within a file
+
+---
+
+### 5.3 Links
+
+- Internal links → **relative paths**
+- External links → **absolute URLs**
+- Use descriptive link text
+
+---
+
+### 5.4 Code Blocks
+
+- Always use fenced code blocks
+- Always specify a language
+- Use inline code only for short references
+
+---
+
+### 5.5 Tables
+
+- Use standard Markdown table syntax
+- Align columns for readability
+
+---
+
+### 5.6 Images and Accessibility
+
+- Always include meaningful alt text
+- Avoid decorative images without context
+
+---
+
+## 6. MkDocs-Specific Rules
+
+- Add YAML front matter **only when required**
+- Ensure all pages are referenced in `mkdocs.yml.jinja`
+- Verify all internal links resolve after generation
+
+---
+
+## 7. File Naming Conventions
+
+- Use lowercase file names
+- Use hyphens, not underscores
+
+---
+
+## 8. Common Mistakes to Avoid
+
+- Hardcoding values instead of using Jinja variables
+- Broken internal links
+- Inconsistent heading levels
+- Missing alt text for images
+- Mixing raw HTML with Markdown unnecessarily
+
+---
+
+## 9. Validation and Review Workflow
+
+- Preview rendered Markdown
+- Generate a sample project with Copier
+- Verify links, variables, and formatting
+
+---
+
+## 10. Reference Resources
+
+- https://commonmark.org/
+- https://docs.github.com/en/get-started/writing-on-github
+- https://www.markdownguide.org/
+- https://www.mkdocs.org/
+
+---
+
+## 11. Final Instruction to AI Models
+
+**Follow these rules exactly.
+Consistency is mandatory.**

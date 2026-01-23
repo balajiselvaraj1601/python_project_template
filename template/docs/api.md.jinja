@@ -1,15 +1,30 @@
-{% if include_docs %}# API Reference
+{% if include_docs %}
+# API Reference
+
+This section provides the complete API reference for the **{{ package_name }}** package.
+The documentation is generated automatically from docstrings and reflects the public
+interfaces exposed by the package.
+
+---
+
+## Package Overview
 
 ::: {{ package_name }}
     options:
       show_root_heading: true
       show_source: true
+      show_submodules: false
+
+---
 
 ## Core Module
+
+The core module contains the primary public APIs and foundational logic for the package.
 
 ::: {{ package_name }}.core
     options:
       show_root_heading: true
       show_source: true
       members_order: source
+      show_if_no_docstring: false
 {% endif %}

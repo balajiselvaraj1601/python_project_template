@@ -51,16 +51,18 @@ Issues = "https://github.com/your-org/python-project-template/issues"
 dev = [
     "copier>=9.11.2",
     "pre-commit>=3.7.0",
-    "pytest>=8.0.0",
-    "pytest-cov>=4.0.0",
     "ruff>=0.14.0",
     "basedpyright>=1.21.0",
-    "mdformat>=0.7.0",
 ]
 
 docs = [
     "mkdocs>=1.6.0",
     "mkdocs-material>=9.5.0",
+]
+
+test = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 # ==========================================================================
@@ -102,3 +104,5 @@ select = ["E", "F", "I", "UP", "RUF"]
 [tool.basedpyright]
 typeCheckingMode = "basic"
 pythonVersion = "3.11"
+
+# ==========================================================================

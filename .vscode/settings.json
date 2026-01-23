@@ -2,7 +2,7 @@
   // ============================================================
   // Editor Behavior
   // ============================================================
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
   "editor.codeActionsOnSave": {
@@ -51,7 +51,7 @@
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
-    "markdown": true,
+    "markdown": false,
     "yaml": true
   },
   // Encourage explicitness in suggestions
@@ -78,12 +78,19 @@
   // JSON / YAML / TOML (Template-heavy repo friendliness)
   // ============================================================
   "[json]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "[yaml]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "[toml]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": false,
+      "source.organizeImports": false
+    }
   }
 }

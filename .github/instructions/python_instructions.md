@@ -1,316 +1,150 @@
-# Python Contributor Instructions — Authoritative
+# Python Instructions for AI Coding Agents
 
-These rules define how Python code must be written, generated, reviewed, and validated for projects created from this template.
-They combine repository-specific constraints with the authoritative Python standards used by Copilot assistance.
+This repository is a **Copier template for generating Python projects**.
+This document defines **clear, consistent, and enforceable rules** that an AI coding agent (or human contributor) must follow when **creating, editing, or generating Python files** in this repository.
 
-______________________________________________________________________
+The goal is **correct, maintainable, and reproducible Python code** in both the **template itself** and in **generated projects**.
 
-## 1. Repository Context (Read This First)
+---
 
-This repository is a **Copier template**.
+## 1. Purpose and Scope
 
-- Edit files under `template/` to change generated projects.
-- Do not edit generated output directly.
-- Always validate changes by generating a project and running the checks below.
+Python in this repository serves two distinct roles:
 
-### Key Template Files
+- **Template code** used to generate new projects
+- **Generated project code** that must pass formatting, linting, typing, and tests
 
-- `template/src/{{ package_name }}/__init__.py.jinja`
-- `template/src/{{ package_name }}/core.py.jinja`
-- `template/tests/unit/test_core.py.jinja`
+These instructions apply to:
 
-______________________________________________________________________
+- Python files in `template/src/`
+- Python files in `template/tests/`
+- Python configuration files generated from Jinja templates
+- Supporting scripts used for validation and CI
 
-## 2. Local Verification (Generated Project)
+**Out of Scope**
+    These instructions do **not** govern application-specific business logic beyond what the template defines.
 
-All changes must pass the following checks in a freshly generated project:
+---
 
-```bash
-copier copy . /tmp/test-project
-cd /tmp/test-project
-just fmt
-just lint
-just type
-just test
-just coverage
-just ci
-```
+## 2. Source of Truth and Priority
 
-Generated projects are expected to pass **strict linting and typing**.
+When working with Python files, follow this order of authority:
 
-______________________________________________________________________
+1. **Instruction Files** in `.github/instructions/`
+2. `pyproject.toml` (tooling and configuration)
+3. Existing patterns in `template/`
+4. Python ecosystem defaults
 
-## 3. Target Environment
+Higher-priority sources **override** lower-priority ones.
 
-- Python 3.11+
-- CPython only
-- Do not assume optional runtime dependencies unless enabled via `copier.yml`
+---
 
-______________________________________________________________________
+## 3. Key Files to Review First
 
-## 4. Core Design Principles
+Before editing or generating Python code, review:
 
-- Readability and maintainability over cleverness
-- Explicit behavior over implicit magic
-- Small, focused units
-- Prefer composition and dependency injection
-- Write code for the next maintainer, not the original author
+- `pyproject.toml`
+  Defines formatting, linting, typing, and testing rules
 
-______________________________________________________________________
+- `template/src/`
+  Canonical structure for generated Python packages
 
-## 5. Formatting & Naming
+- `template/tests/`
+  Testing patterns expected in generated projects
 
-### Formatting
+- `copier.yml`
+  Feature flags that affect generated Python code
 
-- PEP 8, Black-compatible
-- Target line length: ~88 characters
-- One statement per line
-- Use blank lines to separate logical sections
-- Prefer early returns
-- Avoid deeply nested control flow
-- Functions longer than ~30 lines usually indicate refactoring
+---
 
-### Naming
+## 4. Python Version and Compatibility
 
-- Variables & functions: `snake_case`
-- Constants: `UPPER_SNAKE_CASE`
-- Classes: `PascalCase`
-- Names must be descriptive; avoid vague names like `data`, `info`, `value`
+- Target the Python version specified in `pyproject.toml`
+- Generated code must remain compatible with the declared version range
+- Do not introduce syntax or standard library features outside the supported range
 
-______________________________________________________________________
+---
 
-## 6. Typing (Mandatory for Public APIs)
+## 5. Code Style and Formatting
 
-- Type hints are required for all public functions, methods, and classes
+### 5.1 Formatting
 
-- Avoid `Any`
+- All Python code must be formatted using:
+  ```text
+  ruff format
+  ```
 
-- Prefer built-in generics (`list[str]`, `dict[str, int]`)
+---
 
-- Use `Optional[T]` only when `None` is meaningful
+### 5.2 Linting
 
-- Use `TypeVar` for generics
+- Follow all rules enforced by:
+  ```text
+  ruff
+  ```
 
-- NumPy (when enabled):
+---
 
-  - `import numpy.typing as npt`
-  - Use `npt.NDArray[...]`
+### 5.3 Type Checking
 
-Strict type checking is enforced via **BasedPyright**.
+- Type checking is enforced using:
+  ```text
+  basedpyright
+  ```
+- All public functions, methods, and classes must be fully typed
 
-______________________________________________________________________
+---
 
-## 7. Docstrings (Google Style — Mandatory)
+## 6. Project Structure Rules
 
-All public modules, classes, functions, and methods must include **Google-style docstrings**.
+- Use a `src/` layout
+- One top-level Python package per project
+- Tests must live in `tests/`
 
-### Rules
+---
 
-- One-line imperative summary
+## 7. Jinja Templating Rules for Python Files
 
-- Blank line after the summary
+- Always use variables defined in `copier.yml`
+- Never hardcode package names or versions
+- Keep `{% if %}` blocks minimal and readable
+- Generated files must be valid Python after rendering
 
-- Use sections when applicable:
+---
 
-  - `Args`
-  - `Returns`
-  - `Raises`
-  - `Examples`
+## 8. Testing Rules
 
-- Describe behavior and intent, not implementation details
+- Use `pytest` exclusively
+- Every generated module must have corresponding tests
+- Tests must be deterministic and CI-safe
 
-______________________________________________________________________
+---
 
-## 8. Functions
+## 9. Validation Requirements (Mandatory)
 
-### Rules
+1. Generate a test project:
+   ```bash
+   copier copy . /tmp/test-project
+   ```
+2. Validate:
+   ```bash
+   cd /tmp/test-project && just ci
+   ```
 
-- Keep functions short and single-purpose
-- Prefer pure functions
-- Avoid mutable default arguments
-- Prefer returning values over mutating inputs
-- Raise specific exceptions with clear, actionable messages
-- Catch only exceptions you can handle meaningfully
+---
 
-### Function Example
+## 10. Common Mistakes to Avoid
 
-```python
-def normalize_email(email: str) -> str:
-    """Normalize an email address.
+- Hardcoding values instead of using Copier variables
+- Adding dependencies without updating templates
+- Skipping validation in generated projects
 
-    Args:
-        email: Raw email address.
+---
 
-    Returns:
-        A normalized, lowercase email address.
+## 11. Final Instruction to AI Models
 
-    Raises:
-        ValueError: If the email address is invalid.
-    """
-    normalized = email.strip().lower()
-    if "@" not in normalized:
-        raise ValueError("Invalid email address")
-    return normalized
-```
+- **Validate in generated projects.**
+- **Follow existing patterns.**
+- **Do not guess.**
 
-______________________________________________________________________
-
-## 9. Classes
-
-Classes must represent **cohesive concepts** with clear responsibilities.
-Prefer **composition over inheritance**.
-
-### General Rules
-
-- All public classes must have a class-level docstring
-- Keep `__init__` minimal
-- Avoid complex logic in constructors
-- Document all public methods
-- Avoid hidden or global state
-
-______________________________________________________________________
-
-### 9.1 Data Classes
-
-Use `@dataclass` for simple data containers.
-
-#### Rules
-
-- Prefer `frozen=True` unless mutation is required
-- Do not embed business logic
-- Use type hints for all fields
-- Document attributes in the class docstring
-
-#### Example
-
-```python
-from dataclasses import dataclass
-
-@dataclass(frozen=True)
-class User:
-    """Represent a system user.
-
-    Attributes:
-        id: Unique user identifier.
-        email: User email address.
-        is_active: Whether the user is active.
-    """
-
-    id: int
-    email: str
-    is_active: bool = True
-```
-
-______________________________________________________________________
-
-### 9.2 Service / Behavior Classes
-
-Use regular classes for behavior, orchestration, and coordination.
-
-#### Rules
-
-- Inject dependencies explicitly
-- Keep methods focused
-- Do not perform I/O at construction time
-
-#### Example
-
-```python
-class UserService:
-    """Provide operations related to user management."""
-
-    def __init__(self, repository: UserRepository) -> None:
-        self._repository = repository
-
-    def get_user(self, user_id: int) -> User:
-        """Retrieve a user by ID.
-
-        Args:
-            user_id: Unique identifier of the user.
-
-        Returns:
-            The matching user.
-
-        Raises:
-            UserNotFoundError: If the user does not exist.
-        """
-        user = self._repository.find_by_id(user_id)
-        if user is None:
-            raise UserNotFoundError(f"User {user_id} not found")
-        return user
-```
-
-______________________________________________________________________
-
-## 10. Imports, Logging & Side Effects
-
-### Imports
-
-- Order:
-
-  1. Standard library
-  1. Third-party
-  1. Local modules
-
-- Prefer absolute imports
-
-- No wildcard imports
-
-### Logging
-
-- Use `logging`; never use `print`
-- Log messages must be clear and actionable
-- Never log secrets
-
-### Side Effects
-
-- Avoid side effects at import time
-- Defer I/O and expensive operations to functions or explicit entry points
-
-______________________________________________________________________
-
-## 11. Module Metadata & Public API
-
-- Define `__version__` in the package `__init__.py`
-- Maintain an explicit `__all__`
-- Update `__all__` when adding or removing public symbols
-- Avoid unused imports and variables
-
-______________________________________________________________________
-
-## 12. Testing
-
-- Tests live under:
-
-  - `tests/unit/`
-  - `tests/properties/` (optional)
-
-- Test files and functions start with `test_`
-
-- Test functions return `-> None`
-
-- Prefer simple `assert` statements
-
-______________________________________________________________________
-
-## 13. Prohibited Patterns & Common Pitfalls
-
-- Global mutable state
-- Metaprogramming and implicit magic
-- Clever one-liners that reduce readability
-- Implicit behavior without documentation
-- Relying on globally installed tool versions
-
-### Template-Specific Notes
-
-- Update `copier.yml` when dependency choices vary
-- Keep workflows and `justfile.jinja` aligned so `just ci` mirrors CI
-- Use `uv` for pinned tool execution
-
-______________________________________________________________________
-
-## 14. Final Rule
-
-If code is unclear, surprising, or difficult to reason about, it does not meet the standards of this template — even if it passes all checks.
-
-______________________________________________________________________
+These rules are mandatory.

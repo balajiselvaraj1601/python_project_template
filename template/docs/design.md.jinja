@@ -1,100 +1,215 @@
-{% if include_docs %}# Design Philosophy
+{% if include_docs %}
+# Design Philosophy
+
+This document describes the guiding principles behind **{{ package_name }}**.
+These principles influence architecture, APIs, testing strategy, and how the
+project is structured to support both **human contributors** and **AI coding
+assistants**.
+
+---
 
 ## Core Principles
 
 ### 1. Library-First Design
 
-This is a **library**, not an application or service. This means:
+{{ package_name }} is a **library**, not an application or service.
 
-- No global state or singletons
-- Pure functions where possible
-- Explicit dependencies
-- Composable APIs
+This means:
 
-### 2. Type Safety
+- No implicit runtime behavior
+- No background processes
+- No hidden configuration
+- APIs are designed for reuse and composition
 
-Every function is strictly typed:
+Design implications:
+
+- Prefer pure functions
+- Avoid side effects unless explicitly documented
+- Require dependencies to be passed explicitly
+- Favor small, composable interfaces over large abstractions
+
+---
+
+### 2. Strong Type Safety
+
+All public APIs are strictly typed.
 
 ```python
 def process_data(values: list[float], threshold: float) -> list[float]:
-    """Clear types make intent obvious."""
+    """Filter values greater than the given threshold."""
     return [v for v in values if v > threshold]
 ```
 
-Benefits:
-- Catches errors at development time
-- Enables better IDE support
-- Serves as living documentation
-- Helps AI assistants like Copilot
+Benefits of strict typing:
 
-### 3. Testing Strategy
+- Errors are caught earlier during development
+- IDEs and editors provide better autocomplete and refactoring support
+- Type hints act as executable documentation
+- AI assistants (e.g. Copilot) can reason more accurately about intent
 
-We use comprehensive unit testing to ensure correctness.
+Type annotations are considered part of the public API contract.
 
-### 4. Copilot Optimization
+---
 
-The project structure guides AI assistants:
+### 3. Explicit State Management
 
-- Clear naming conventions
-- Consistent patterns
-- Comprehensive docstrings
-- Type hints everywhere
+Global mutable state is forbidden.
 
-### 5. Zero Global State
+Hidden state makes code:
 
-Global mutable state is forbidden. Instead:
+- Harder to test
+- Difficult to reason about
+- Unsafe in concurrent environments
+
+Preferred pattern:
 
 ```python
-# ❌ Bad: Hidden global state
-cache = {}
-def get_value(key: str) -> int:
-    return cache.get(key, 0)
+# ❌ Avoid: hidden global state
+_cache: dict[str, int] = {}
 
-# ✅ Good: Explicit state
+def get_value(key: str) -> int:
+    return _cache.get(key, 0)
+```
+
+```python
+# ✅ Preferred: explicit state
 def get_value(cache: dict[str, int], key: str) -> int:
     return cache.get(key, 0)
 ```
 
-### 6. Thread Safety
+All state must be:
 
-All code is designed to be thread-safe by default:
+- Passed explicitly
+- Owned by the caller
+- Clearly documented
 
-- No mutable globals
-- Pure functions where possible
-- Explicit when mutation occurs
+---
+
+### 4. Testing as a Design Tool
+
+Testing is not an afterthought—it is a design constraint.
+
+Guidelines:
+
+- Every public function must be testable in isolation
+- Prefer small, deterministic unit tests
+- Avoid reliance on external systems or global state
+- Tests should document expected behavior
+
+Well-tested code is easier to refactor, extend, and generate reliably.
+
+---
+
+### 5. AI-Assisted Development Optimization
+
+The project structure is intentionally designed to support AI coding tools.
+
+This includes:
+
+- Clear and descriptive naming
+- Consistent module and file layouts
+- Comprehensive docstrings
+- Strict and complete type hints
+
+These practices improve:
+
+- Code generation quality
+- Refactoring accuracy
+- Bug detection
+- Long-term maintainability
+
+---
+
+### 6. Thread Safety by Default
+
+All code is designed to be thread-safe unless explicitly stated otherwise.
+
+This is achieved by:
+
+- Eliminating mutable global state
+- Favoring immutable data structures
+- Using pure functions where possible
+- Making mutations explicit and localized
+
+Thread safety is a baseline expectation, not an optional feature.
+
+---
 
 ## Performance Considerations
 
+Performance is addressed through **clear algorithms first**, then optimization
+where it matters.
+
 {% if include_numpy %}
-For numerical operations, we leverage NumPy's vectorization:
+When numerical workloads are enabled, NumPy is used for vectorized operations:
 
 ```python
-# Vectorized operations are orders of magnitude faster
-result = arr ** 2  # Good
-# vs
-result = [x ** 2 for x in arr]  # Slower
+# ✅ Preferred: vectorized operations
+result = arr ** 2
 ```
+
+```python
+# ❌ Avoid when performance matters
+result = [x ** 2 for x in arr]
+```
+
+Vectorization improves:
+
+- Performance
+- Readability
+- Predictability
 {% endif %}
 
-## Error Handling
+Premature optimization is avoided unless supported by profiling data.
 
-We follow Python's "ask forgiveness, not permission" (EAFP) principle:
+---
+
+## Error Handling Philosophy
+
+The code follows Python’s **EAFP** (Easier to Ask Forgiveness than Permission)
+principle.
 
 ```python
 def safe_divide(a: float, b: float) -> float | None:
-    """Divide with error handling."""
+    """Safely divide two numbers."""
     try:
         return a / b
     except ZeroDivisionError:
         return None
 ```
 
-## Future Compatibility
+Guidelines:
 
-This library targets Python {{ python_min_version }}+, which includes:
+- Use exceptions for exceptional conditions
+- Catch only specific exceptions
+- Do not suppress errors silently
+- Return explicit sentinel values (`None`, `Result`, etc.) when appropriate
 
-- Modern type hints (PEP 604: `X | Y` unions)
-- Match statements (PEP 634)
-- Improved error messages
-- Performance improvements
+---
+
+## Forward Compatibility
+
+This library targets **Python {{ python_min_version }}+**.
+
+This allows the use of modern language features, including:
+
+- PEP 604 union types (`X | Y`)
+- Structural pattern matching
+- Improved error messages and diagnostics
+- Ongoing performance improvements
+
+Backward compatibility is maintained within the supported version range.
+
+---
+
+## Summary
+
+The design philosophy of {{ package_name }} prioritizes:
+
+- Clarity over cleverness
+- Explicitness over magic
+- Safety over convenience
+- Long-term maintainability over short-term shortcuts
+
+All contributions and extensions should align with these principles.
 {% endif %}

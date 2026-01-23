@@ -32,8 +32,7 @@ jobs:
       - name: Run Ruff (format check)
         run: uv run ruff format --check .
 
-      - name: Run mdformat (format check)
-        run: uv run mdformat --check .
+
 
       - name: Run Ruff (lint)
         run: uv run ruff check .

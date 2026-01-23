@@ -1,201 +1,120 @@
 # Contributing to {{ project_name }}
 
-Thank you for your interest in contributing! This document provides guidelines and information for contributors.
+Thank you for considering contributing to this project! 🎉
+Contributions of all kinds—bug fixes, new features, documentation improvements, and refactors—are welcome and appreciated.
 
-## Development Philosophy
+This guide describes the expected workflow and standards to help keep contributions consistent and easy to review.
 
-This project prioritizes:
+---
 
-1. **Type Safety**: All code must be strictly typed
-2. **Testing**: Comprehensive unit tests required
-3. **Code Quality**: Automated checks via Ruff and BasedPyright
-4. **Simplicity**: Clear, readable code over clever solutions
-5. **Documentation**: Code should be self-documenting with helpful docstrings
+## Before You Start
+
+Before making any changes, please:
+
+- Read the project **README.md** for setup instructions and background context
+- Search existing **issues** and **pull requests** to avoid duplicating work
+- For larger or breaking changes, consider opening an issue first to discuss the approach
+
+---
 
 ## Getting Started
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/{{ project_slug }}.git`
-3. Set up development environment: `uv sync`
-4. Install pre-commit hooks: `uv run pre-commit install`
-5. Create a feature branch: `git checkout -b feature/your-feature-name`
+### 1. Fork the Repository
+
+Create a fork of the repository on GitHub.
+
+### 2. Create a Feature Branch
+
+Create a new branch with a descriptive name:
+
+```bash
+git checkout -b feature/short-description
+```
+
+### 3. Set Up the Development Environment
+
+Follow the setup instructions in the repository `README.md`.
+
+---
 
 ## Testing
 
-We use comprehensive unit testing to ensure correctness.
+All changes must be tested.
 
-#### Unit Tests
+- Run the full test suite locally:
+  ```bash
+  uv run pytest
+  ```
 
-Write focused unit tests:
+- Add or update tests for:
+  - New features
+  - Bug fixes
+  - Any change that affects behavior
 
-```python
-def test_calculate_mean_simple() -> None:
-    """Test mean calculation with simple values."""
-    assert calculate_mean([1.0, 2.0, 3.0]) == 2.0
+Pull requests with failing or missing tests will not be merged.
 
-def test_calculate_mean_empty_list_raises() -> None:
-    """Test that empty list raises ValueError.
-    with pytest.raises(ValueError, match="empty list"):
-        calculate_mean([])
+---
 
-        >>> calculate_mean([1.0, 2.0, 3.0])
-        2.0
-    """
-    if not values:
-        raise ValueError("Cannot calculate mean of empty list")
-    return sum(values) / len(values)
-```
+## Code Style and Quality
 
-### Testing
+This project enforces automated formatting and linting.
 
-#### Unit Tests
-
-Write focused unit tests:
-
-```python
-def test_calculate_mean_simple() -> None:
-    """Test mean calculation with simple values."""
-    assert calculate_mean([1.0, 2.0, 3.0]) == 2.0
-
-def test_calculate_mean_empty_list_raises() -> None:
-    """Test that empty list raises ValueError."""
-    with pytest.raises(ValueError, match="empty list"):
-        calculate_mean([])
-```
-
-### Code Style
-
-- We use **Ruff** for both formatting and linting:
-
-- Line length: 100 characters
-- Use double quotes for strings
-- One import per line, sorted by isort
-- No unused imports or variables
-
-### Anti-Patterns to Avoid
-
-❌ **Global Mutable State**
-```python
-# Bad: Global state makes code hard to reason about
-cache = {}
-
-def get_or_compute(key: str) -> int:
-    if key not in cache:
-        cache[key] = expensive_computation(key)
-    return cache[key]
-```
-
-✅ **Explicit State Management**
-```python
-# Good: Pass state explicitly
-def get_or_compute(cache: dict[str, int], key: str) -> int:
-    if key not in cache:
-        cache[key] = expensive_computation(key)
-    return cache[key]
-```
-
-❌ **Bare Excepts**
-```python
-# Bad: Catches everything, including KeyboardInterrupt
-try:
-    risky_operation()
-except:
-    pass
-```
-
-✅ **Specific Exception Handling**
-```python
-# Good: Only catch what you expect
-try:
-    risky_operation()
-except ValueError as e:
-    logger.warning(f"Invalid value: {e}")
-    return None
-```
-
-## Workflow
-
-### Making Changes
-
-1. **Write tests first** (TDD preferred)
-2. **Implement the feature**
-3. **Run all checks**: `just ci`
-4. **Update documentation** if needed
-5. **Commit with clear messages**
-
-### Commit Messages
-
-Follow conventional commits:
-
-```
-feat: add new data processing function
-fix: handle edge case in mean calculation
-docs: update installation instructions
-test: add property tests for statistics module
-refactor: simplify error handling logic
-```
-
-### Before Submitting
-
-Run all checks locally:
+Before submitting your changes, run:
 
 ```bash
-just ci
+uv run ruff
+uv run black
 ```
 
-This runs:
-- `ruff format --check` (formatting)
-- `ruff check` (linting)
-- `basedpyright` (type checking)
-- `pytest` (tests)
+Ensure that:
 
-## Pull Request Process
+- Code is properly formatted
+- Linting issues are resolved
+- Type hints and docstrings are added where appropriate
 
-1. Ensure all CI checks pass
-2. Update the README if you've added features
-3. Add tests for new functionality
-4. Request review from maintainers
-5. Address review feedback
-6. Squash commits if requested
+---
 
-## Copilot Best Practices
+## Making Changes
 
-This project is optimized for GitHub Copilot and similar AI assistants:
+When working on your contribution:
 
-### For Copilot Users
+- Keep commits **small and focused**
+- Follow existing patterns and project structure
+- Avoid unrelated refactors or formatting-only changes
+- Write clear and descriptive commit messages
 
-- **Trust the structure**: The project layout guides Copilot to good patterns
-- **Type hints help**: Copilot uses types to suggest better completions
-- **Docstrings matter**: Clear docstrings lead to better suggestions
-- **Follow patterns**: Copilot learns from existing code structure
+---
 
-### Writing Copilot-Friendly Code
+## Submitting a Pull Request
 
-```python
-# Good: Clear intent, types, and structure help Copilot
-def process_dataset(
-    data: pd.DataFrame,
-    column: str,
-    threshold: float = 0.5,
-) -> pd.DataFrame:
-    """Filter dataset based on column threshold.
+1. Push your branch to your fork
+2. Open a pull request against the main repository
+3. In the pull request description:
+   - Clearly explain what the change does
+   - Reference related issues (for example, `Closes #123`)
+   - Call out any breaking changes or follow-up work
 
-    Copilot will suggest appropriate pandas operations based on
-    the clear type hints and descriptive function name.
-    """
-    # Copilot suggestion will likely be correct here
-    return data[data[column] > threshold]
-```
+Maintainers may request changes or clarifications before merging.
 
-## Questions?
+---
 
-- Open an issue for bugs or feature requests
-- Start a discussion for questions or ideas
-- Check existing issues before creating new ones
+## Pull Request Checklist
+
+Before submitting your pull request, confirm that:
+
+- [ ] Tests pass locally
+- [ ] New functionality includes appropriate tests
+- [ ] Code follows project style and conventions
+- [ ] Documentation has been updated if needed
+- [ ] The pull request is scoped to a single logical change
+
+---
 
 ## Code of Conduct
 
-- Be respectful and inclusive
-- Focus on constructive feedback
-- Help others learn and grow
-- Assume good intentions
+By participating in this project, you agree to follow the project’s **Code of Conduct**.
+Please help maintain a respectful, inclusive, and welcoming environment for everyone.
+
+---
+
+Thank you for contributing and helping improve the project! 🚀
