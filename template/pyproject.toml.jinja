@@ -40,9 +40,6 @@ test = [
     "pytest-xdist>=3.5.0",
     "pytest-cov>=6.0.0",
     "coverage[toml]>=7.6.0",
-    {% if include_hypothesis %}
-        {% if include_numpy %}"hypothesis[numpy]>=6.122.0",{% else %}"hypothesis>=6.122.0",{% endif %}
-    {% endif %}
 ]
 
 {% if include_docs %}

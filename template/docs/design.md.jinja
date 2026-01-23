@@ -29,22 +29,7 @@ Benefits:
 
 ### 3. Testing Strategy
 
-{% if include_hypothesis %}
-We use **property-based testing** to verify invariants:
-
-```python
-@given(st.lists(st.floats()))
-def test_filter_preserves_order(values: list[float]) -> None:
-    """Filtering should preserve relative order."""
-    result = process_data(values, threshold=0.0)
-    # Properties that must hold for ALL inputs
-    assert all(a <= b for a, b in zip(result, result[1:]))
-```
-
-This catches edge cases that unit tests miss.
-{% else %}
 We use comprehensive unit testing to ensure correctness.
-{% endif %}
 
 ### 4. Copilot Optimization
 

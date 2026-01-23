@@ -10,7 +10,7 @@
 
 ## Features
 
-- 🔬 **Rigorous Testing**: Unit tests{% if include_hypothesis %}, property-based testing with Hypothesis{% endif %}
+- 🔬 **Rigorous Testing**: Unit tests
 - 🧠 **Copilot-Optimized**: Structured for excellent AI assistance
 - ⚡ **Modern Tooling**: uv, Ruff, BasedPyright
 - 📊 **Data Science Ready**: {% if include_numpy %}NumPy{% endif %}{% if include_numpy and include_pandas_support %}, {% endif %}{% if include_pandas_support %}pandas{% endif %} support
@@ -113,7 +113,6 @@ uv run pytest
 │       └── py.typed          # Type hint marker
 ├── tests/
 │   ├── unit/                 # Unit tests
-│   ├── properties/           # Property-based tests
 │   └── test_imports.py       # Import sanity checks
 ├── .github/
 │   └── workflows/
@@ -129,7 +128,7 @@ This library is designed with several key principles:
 
 1. **Library-First**: Built as a reusable library, not an application
 2. **Type Safety**: Strict typing enforced at every level
-3. **Testability**: {% if include_hypothesis %}Property-based tests ensure correctness across input space{% else %}Comprehensive test coverage{% endif %}
+3. **Testability**: Comprehensive test coverage
 4. **Copilot-Aware**: Documentation and structure optimized for AI assistance
 5. **Modern Python**: Leverages Python {{ python_min_version }}+ features
 6. **Deterministic**: Locked dependencies via uv for reproducible builds
@@ -149,4 +148,4 @@ Built with:
 - [Ruff](https://docs.astral.sh/ruff/) - Fast Python linter and formatter
 - [BasedPyright](https://github.com/DetachHead/basedpyright) - Type checker
 - [pytest](https://docs.pytest.org/) - Testing framework
-{% if include_hypothesis %}- [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing{% endif %}
+```

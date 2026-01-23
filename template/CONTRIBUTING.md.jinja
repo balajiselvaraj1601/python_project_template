@@ -7,7 +7,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 This project prioritizes:
 
 1. **Type Safety**: All code must be strictly typed
-2. **Testing**: {% if include_hypothesis %}Property-based testing preferred for verifying invariants{% else %}Comprehensive unit tests required{% endif %}
+2. **Testing**: Comprehensive unit tests required
 3. **Code Quality**: Automated checks via Ruff and BasedPyright
 4. **Simplicity**: Clear, readable code over clever solutions
 5. **Documentation**: Code should be self-documenting with helpful docstrings
@@ -20,39 +20,24 @@ This project prioritizes:
 4. Install pre-commit hooks: `uv run pre-commit install`
 5. Create a feature branch: `git checkout -b feature/your-feature-name`
 
-## Code Standards
+## Testing
 
-### Type Hints
+We use comprehensive unit testing to ensure correctness.
 
-All functions must have complete type hints:
+#### Unit Tests
+
+Write focused unit tests:
 
 ```python
-def good_function(value: int, name: str) -> dict[str, int]:
-    """This is properly typed."""
-    return {name: value}
+def test_calculate_mean_simple() -> None:
+    """Test mean calculation with simple values."""
+    assert calculate_mean([1.0, 2.0, 3.0]) == 2.0
 
-def bad_function(value, name):  # ❌ Missing type hints
-    return {name: value}
+def test_calculate_mean_empty_list_raises() -> None:
+    """Test that empty list raises ValueError."""
+    with pytest.raises(ValueError, match="empty list"):
+        calculate_mean([])
 ```
-
-### Docstrings
-
-Use Google-style docstrings:
-
-```python
-def calculate_mean(values: list[float]) -> float:
-    """Calculate the arithmetic mean of a list of numbers.
-
-    Args:
-        values: A list of numeric values. Must not be empty.
-
-    Returns:
-        The arithmetic mean of the input values.
-
-    Raises:
-        ValueError: If the input list is empty.
-
-    Examples:
         >>> calculate_mean([1.0, 2.0, 3.0])
         2.0
     """
@@ -62,23 +47,6 @@ def calculate_mean(values: list[float]) -> float:
 ```
 
 ### Testing
-
-{% if include_hypothesis %}
-#### Property-Based Testing
-
-Use Hypothesis to verify invariants:
-
-```python
-from hypothesis import given
-from hypothesis import strategies as st
-
-@given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
-def test_mean_is_between_min_and_max(values: list[float]) -> None:
-    """The mean should always be between the min and max values."""
-    result = calculate_mean(values)
-    assert min(values) <= result <= max(values)
-```
-{% endif %}
 
 #### Unit Tests
 

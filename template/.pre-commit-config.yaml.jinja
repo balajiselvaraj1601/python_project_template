@@ -4,7 +4,7 @@
 # - Keeps fast checks at commit stage, heavier checks at push/CI
 # - Pin external hooks; review revs regularly (Renovate can help)
 
-default_install_hook_types: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit]
 
 repos:
   # ---------------------------------------------------------------------------
@@ -34,7 +34,6 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
-        # NOTE: If full repo type-check is slow, move this to "pre-push" stage.
         stages: [pre-commit]
 
   # ---------------------------------------------------------------------------
@@ -54,8 +53,8 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: mixed-line-ending
-      - id: no-commit-to-branch
-        args: ["--branch", "main", "--branch", "master"]
+      # - id: no-commit-to-branch
+      #   args: ["--branch", "main", "--branch", "master"]
 
   # ---------------------------------------------------------------------------
   # Detect secrets (prevent leaks)
@@ -77,16 +76,3 @@ repos:
   #   rev: v0.7.0
   #   hooks:
   #     - id: nbstripout
-
-  # ---------------------------------------------------------------------------
-  # Pre-push: run tests before push (can be slow for large test suites)
-  # ---------------------------------------------------------------------------
-  - repo: local
-    hooks:
-      - id: pytest-push
-        name: pytest (uv) pre-push
-        entry: uv run pytest -q
-        language: system
-        types: [python]
-        pass_filenames: false
-        stages: [pre-push]

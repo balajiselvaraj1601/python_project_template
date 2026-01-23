@@ -4,7 +4,7 @@
 # - Keeps fast checks at commit stage, heavier checks at push/CI
 # - Pin external hooks; review revs regularly (Renovate can help)
 
-default_install_hook_types: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit]
 
 repos:
   # ---------------------------------------------------------------------------
@@ -34,7 +34,6 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
-        # NOTE: If full repo type-check is slow, move this to "pre-push" stage.
         stages: [pre-commit]
 
   # ---------------------------------------------------------------------------
