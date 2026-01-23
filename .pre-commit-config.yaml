@@ -56,3 +56,11 @@ repos:
       # Uncomment to prevent direct commits to main/master branches
       # - id: no-commit-to-branch
       #   args: ["--branch", "main", "--branch", "master"]
+
+  # ---------------------------------------------------------------------------
+  # Markdown formatting
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat

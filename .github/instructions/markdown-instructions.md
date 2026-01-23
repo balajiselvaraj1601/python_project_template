@@ -15,7 +15,7 @@ All Markdown files in the `template/` directory are Jinja templates with `.md.ji
 
 ## Where to Look First
 
-- [README.md](README.md) and [QUICKSTART.md](QUICKSTART.md) for overall project structure
+- [README.md](README.md) for overall project structure and quick reference
 - Existing `.md.jinja` files in `template/` for examples of templated Markdown
 - `template/mkdocs.yml.jinja` for documentation site configuration
 - `copier.yml` for available template variables

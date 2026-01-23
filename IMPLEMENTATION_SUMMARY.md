@@ -9,7 +9,7 @@ A complete, production-ready Copier template for Python data-science libraries f
 ### Configuration
 
 - ✅ `copier.yml` - Template configuration with 12+ prompts and lifecycle tasks
-- ✅ `QUICKSTART.md` - Quick reference guide
+- ✅ `README.md` - Template documentation and quick reference guide
 - ✅ `test-template.sh` - Automated test script
 
 ### Template Files (18 files)
@@ -184,7 +184,7 @@ copier copy gh:YOUR_USERNAME/python_project_template my-awesome-library
 python_project_template/
 ├── copier.yml                 # Main config
 ├── README.md                  # Template documentation
-├── QUICKSTART.md             # Quick reference
+├── README.md                  # Template documentation and quick reference
 ├── instructions.md            # Original design doc
 ├── test-template.sh          # Validation script
 └── template/                  # All template files
@@ -220,7 +220,7 @@ Regular maintenance tasks:
 
 Issues or questions? Check:
 
-1. `QUICKSTART.md` for common tasks
+1. `README.md` for common tasks
 1. `instructions.md` for design rationale
 1. `test-template.sh` for validation
 1. Generated `CONTRIBUTING.md` for patterns

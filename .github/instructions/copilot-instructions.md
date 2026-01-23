@@ -20,7 +20,7 @@ Follow this hierarchical order when working on tasks:
 
 - **Key Files to Know**:
 
-  - [README.md](README.md), [QUICKSTART.md](QUICKSTART.md), [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) for high-level workflows.
+  - [README.md](README.md), [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) for high-level workflows and quick reference.
   - [pyproject.toml](pyproject.toml) for dev dependencies and tooling.
   - `template/` for examples of generated content.
   - `.github/instructions/` for specialized guidance.

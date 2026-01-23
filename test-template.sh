@@ -21,7 +21,7 @@ echo ""
 echo "🔧 Test 1: Generating with defaults..."
 TEST_DIR_1="/tmp/copier-test-default-$(date +%s)"
 
-copier copy . "$TEST_DIR_1" --defaults --trust
+copier copy . "$TEST_DIR_1" --data project_name="Test Project" --trust --defaults
 
 echo "✅ Generated project at $TEST_DIR_1"
 echo ""
@@ -85,6 +85,12 @@ if ! uv run pytest; then
     exit 1
 fi
 
+echo "Running pre-commit hooks..."
+if ! uv run pre-commit run --all-files; then
+    echo "❌ Pre-commit hooks failed"
+    exit 1
+fi
+
 echo "✅ All CI checks passed"
 echo ""
 
@@ -98,7 +104,8 @@ copier copy . "$TEST_DIR_2" \
     --data include_hypothesis=true \
     --data include_pandas_support=true \
     --data include_numpy=true \
-    --trust
+    --trust \
+    --defaults
 
 cd "$TEST_DIR_2"
 
