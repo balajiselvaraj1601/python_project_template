@@ -193,7 +193,7 @@ Check:
 
 ## Version History
 
-- **v1.0.0** (2026-01-22): Initial release
+- **v1.0.0** (2026-01-23): Initial release
   - uv-first workflow
   - Ruff + BasedPyright
   - Hypothesis support

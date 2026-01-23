@@ -4,13 +4,13 @@ A modern, opinionated [Copier](https://copier.readthedocs.io/) template for Pyth
 
 ## Features
 
-🔬 **Data-Science First** - Optimized for numerical and data workflows
-⚡ **Modern Tooling** - uv, Ruff, BasedPyright, pytest
-🧠 **Copilot-Optimized** - Structure and docs designed for AI assistance
-🎯 **Type Safe** - Strict typing enforced by default
-📊 **Testing Ready** - Unit tests + optional property-based testing with Hypothesis
-🔄 **CI/CD Included** - GitHub Actions + Renovate for dependency management
-📦 **Best Practices** - src/ layout, locked dependencies, coverage reporting
+- 🔬 **Data-Science First** - Optimized for numerical and data workflows
+- ⚡ **Modern Tooling** - uv, Ruff, BasedPyright, pytest
+- 🧠 **Copilot-Optimized** - Structure and docs designed for AI assistance
+- 🎯 **Type Safe** - Strict typing enforced by default
+- 📊 **Testing Ready** - Unit tests + optional property-based testing with Hypothesis
+- 🔄 **CI/CD Included** - GitHub Actions + Renovate for dependency management
+- 📦 **Best Practices** - src/ layout, locked dependencies, coverage reporting
 
 ## Quick Start
 
@@ -39,115 +39,89 @@ just ci
 
 ## What Gets Generated
 
-````
+```
 my-new-project/
 ├── .github/
 │   ├── workflows/
-│   │   └── ci.yml              # CI/CD pipeline
-│   └── renovate.json           # Dependency updates
+│   │   └── ci.yml     # CI/CD pipeline
+│   └── renovate.json         # Dependency updates
 ├── src/
-│   └── my_package/
-"""
-# Python Project Template
-
-A modern, opinionated [Copier](https://copier.readthedocs.io/) template for building Python libraries and small projects.
-
-## Overview
-
-This template provides a well-organized starting point with modern tooling and sensible defaults. It is suitable for libraries, CLI tools, and small services — not tied to any specific domain.
-
-## Features
-
-- Modern packaging and dependency management
-- Fast linting and formatting
-- Strict type checking and type hints
-- Test scaffolding and coverage reporting
-- CI workflow and dependency automation
-
-## Quick Start
-
-### Prerequisites
-
-- Python 3.11+
-- `copier` (to generate projects from this template)
-
-### Create a New Project
-
-```bash
-# Generate a new project from this template
-copier copy gh:YOUR_USERNAME/python_project_template my-new-project
-
-cd my-new-project
-
-# Run the recommended checks
-just ci
-````
-
-## What Gets Generated
-
-Typical generated layout:
-
-```
-my-new-project/
-├── .github/                 # CI workflows
-├── src/                     # Source package
-├── tests/                   # Test suite
-├── docs/                    # Optional documentation
-├── pyproject.toml           # Project config & dependencies
-├── justfile                 # Task runner commands
-├── .pre-commit-config.yaml  # Pre-commit hooks
-├── LICENSE                  # License file
-├── README.md                # Project README
-└── CONTRIBUTING.md          # Contributing guide
+│   └── {{ package_name }}/
+│       ├── __init__.py
+│       ├── core.py
+│       └── py.typed
+├── tests/
+│   ├── unit/
+│   │   └── test_core.py
+│   ├── properties/
+│   │   └── test_properties.py
+│   └── test_imports.py
+├── docs/
+│   ├── index.md
+│   ├── design.md
+│   └── api.md
+├── .copier-answers.yml
+├── .gitignore
+├── .pre-commit-config.yaml
+├── CONTRIBUTING.md
+├── justfile
+├── LICENSE
+├── mkdocs.yml
+├── pyproject.toml
+└── README.md
 ```
 
 ## Template Prompts
 
-When generating a project, copier will ask a few standard prompts (project name, package name, description, author, license, Python minimum version, and which optional features to include).
+When generating a project, Copier will prompt for:
+
+- **Project Name**: Human-readable name
+- **Project Slug**: URL-friendly slug
+- **Package Name**: Python package identifier
+- **Description**: Short project description
+- **Author**: Name and email
+- **GitHub Username**: For repository URLs
+- **Python Version**: Minimum supported version (3.11+)
+- **License**: Project license
+- **Optional Features**: Documentation, Hypothesis testing, pandas/NumPy support
 
 ## Tooling
 
-Common tools included or recommended in generated projects:
+Generated projects include:
 
-- `ruff` — fast linter and formatter
-- `pytest` — testing framework
-- `uv` or another package manager — dependency management
-- `pre-commit` — git hooks
-- Type checking (e.g., Pyright/mypy)
+- **uv** - Fast Python package manager
+- **Ruff** - Fast linter and formatter
+- **BasedPyright** - Type checker
+- **pytest** - Testing framework
+- **Hypothesis** - Property-based testing (optional)
+- **MkDocs** - Documentation (optional)
+- **pre-commit** - Git hooks
+- **GitHub Actions** - CI/CD
+- **Renovate** - Dependency updates
 
 ## Development Tasks
 
-Common `just` targets typically include:
+Use the `just` command runner for common tasks:
 
 ```bash
 just fmt        # Format code
 just lint       # Run linter
 just typecheck  # Type check
 just test       # Run tests
-just coverage   # Run tests with coverage report
-just ci         # Run the full CI checks locally
+just coverage   # Run tests with coverage
+just docs       # Build documentation
+just ci         # Run full CI checks
 ```
 
 ## Contributing
 
-Contributions are welcome. Typical workflow:
-
 1. Fork the repository
 2. Create a feature branch
-3. Run the generation locally to test changes: `copier copy . /tmp/test-project`
-4. Validate the generated project: `cd /tmp/test-project && just ci`
-5. Open a pull request
+3. Test changes locally: `copier copy . /tmp/test-project && cd /tmp/test-project && just ci`
+4. Open a pull request
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed maintenance instructions.
 
 ## License
 
-This template is provided under the MIT License. Projects generated from this template may choose their own license.
-
-## Next Steps
-
-- Customize the prompts in `copier.yml` to match your preferred defaults.
-- Add or remove optional features (docs, testing extras) when generating new projects.
-
----
-
-If you'd like, I can also update the template prompts (in [copier.yml](copier.yml)) to use more generic default values. Would you like me to do that?
-"""
+This template is licensed under MIT. Generated projects may choose their own license.
