@@ -1,6 +1,9 @@
-______________________________________________________________________
-
-## name: git-commit description: 'Execute git commit with conventional commit message analysis, intelligent staging, and message generation. Use when user asks to commit changes, create a git commit, or mentions "/commit". Supports: (1) Auto-detecting type and scope from changes, (2) Generating conventional commit messages from diff, (3) Interactive commit with optional type/scope/description overrides, (4) Intelligent file staging for logical grouping' license: MIT allowed-tools: Bash
+---
+name: git-commit
+description: 'Execute git commit with conventional commit message analysis, intelligent staging, and message generation. Use when user asks to commit changes, create a git commit, or mentions "/commit". Supports: (1) Auto-detecting type and scope from changes, (2) Generating conventional commit messages from diff, (3) Interactive commit with optional type/scope/description overrides, (4) Intelligent file staging for logical grouping'
+license: MIT
+allowed-tools: Bash
+---
 
 # Git Commit with Conventional Commits
 
@@ -20,19 +23,19 @@ Create standardized, semantic git commits using the Conventional Commits specifi
 
 ## Commit Types
 
-| Type | Purpose |
+| Type       | Purpose                        |
 | ---------- | ------------------------------ |
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting/style (no logic) |
+| `feat`     | New feature                    |
+| `fix`      | Bug fix                        |
+| `docs`     | Documentation only             |
+| `style`    | Formatting/style (no logic)    |
 | `refactor` | Code refactor (no feature/fix) |
-| `perf` | Performance improvement |
-| `test` | Add/update tests |
-| `build` | Build system/dependencies |
-| `ci` | CI/config changes |
-| `chore` | Maintenance/misc |
-| `revert` | Revert commit |
+| `perf`     | Performance improvement        |
+| `test`     | Add/update tests               |
+| `build`    | Build system/dependencies      |
+| `ci`       | CI/config changes              |
+| `chore`    | Maintenance/misc               |
+| `revert`   | Revert commit                  |
 
 ## Breaking Changes
 
@@ -85,7 +88,7 @@ Analyze the diff to determine:
 
 - **Type**: What kind of change is this?
 - **Scope**: What area/module is affected?
-- **Description**: One-line summary of what changed (present tense, imperative mood, \<72 chars)
+- **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
 
 ### 4. Execute Commit
 

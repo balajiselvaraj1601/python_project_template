@@ -24,4 +24,4 @@ jobs:
       - name: Run ruff
         run: ruff check .
       - name: Run mdformat
-        run: mdformat --check .
+        run: find . -name "*.md" -not -name "SKILL.md" -not -name "SKILL.md.jinja" -not -path "./.venv/*" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./.pytest_cache/*" -not -path "./.ruff_cache/*" -not -path "./.mypy_cache/*" -exec mdformat --check {} +

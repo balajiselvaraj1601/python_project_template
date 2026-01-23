@@ -1,6 +1,7 @@
-______________________________________________________________________
-
-## name: make-skill-template description: 'Create new Agent Skills for GitHub Copilot from prompts or by duplicating this template. Use when asked to "create a skill", "make a new skill", "scaffold a skill", or when building specialized AI capabilities with bundled resources. Generates SKILL.md files with proper frontmatter, directory structure, and optional scripts/references/assets folders.'
+---
+name: make-skill-template
+description: 'Create new Agent Skills for GitHub Copilot from prompts or by duplicating this template. Use when asked to "create a skill", "make a new skill", "scaffold a skill", or when building specialized AI capabilities with bundled resources. Generates SKILL.md files with proper frontmatter, directory structure, and optional scripts/references/assets folders.'
+---
 
 # Make Skill Template
 
@@ -57,8 +58,8 @@ description: '<What it does>. Use when <specific triggers, scenarios, keywords u
 **CRITICAL**: The `description` is the PRIMARY mechanism for automatic skill discovery. Include:
 
 1. **WHAT** the skill does (capabilities)
-1. **WHEN** to use it (triggers, scenarios, file types)
-1. **Keywords** users might mention in prompts
+2. **WHEN** to use it (triggers, scenarios, file types)
+3. **Keywords** users might mention in prompts
 
 **Good example:**
 
@@ -114,13 +115,13 @@ my-awesome-skill/
 ## Quick Start: Duplicate This Template
 
 1. Copy the `make-skill-template/` folder
-1. Rename to your skill name (lowercase, hyphens)
-1. Update `SKILL.md`:
+2. Rename to your skill name (lowercase, hyphens)
+3. Update `SKILL.md`:
    - Change `name:` to match folder name
    - Write a keyword-rich `description:`
    - Replace body content with your instructions
-1. Add bundled resources as needed
-1. Validate with `npm run skill:validate`
+4. Add bundled resources as needed
+5. Validate with `npm run skill:validate`
 
 ## Validation Checklist
 
