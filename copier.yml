@@ -155,7 +155,7 @@ _tasks:
   - command: echo "✅ Project {{ project_name }} created successfully!"
   - command: echo "📁 Location $(pwd)"
   - command: echo "🚀 Run 'just ci' to verify everything works"
-  - command: just ci
+
 
 # -------------------------------------------------------------------------
 # Template-only exclusions
