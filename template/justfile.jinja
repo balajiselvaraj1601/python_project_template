@@ -24,13 +24,13 @@ _set_env:
 # -------------------------------------------------------------------------
 
 fmt:
-    @uv run ruff format .
+    @uv run --active ruff format .
 
 lint:
-    @uv run ruff check .
+    @uv run --active ruff check .
 
 fix:
-    @uv run ruff check --fix .
+    @uv run --active ruff check --fix .
 
 
 
@@ -39,20 +39,20 @@ fix:
 # -------------------------------------------------------------------------
 
 type:
-    @uv run basedpyright
+    @uv run --active basedpyright
 
 # -------------------------------------------------------------------------
 # Testing
 # -------------------------------------------------------------------------
 
 test:
-    @uv run pytest tests/ -v
+    @uv run --active pytest tests/ -v
 
 test-parallel:
-    @uv run pytest tests/ -v -n auto
+    @uv run --active pytest tests/ -v -n auto
 
 coverage:
-    @uv run pytest tests/ \
+    @uv run --active pytest tests/ \
         --cov=src \
         --cov-report=term-missing \
         --cov-report=html \
@@ -63,11 +63,11 @@ coverage:
 # -------------------------------------------------------------------------
 
 precommit-install:
-    @uv run pre-commit install
-    @uv run pre-commit install --hook-type pre-push
+    @uv run --active pre-commit install
+    @uv run --active pre-commit install --hook-type pre-push
 
 precommit:
-    @uv run pre-commit run --all-files --verbose
+    @uv run --active pre-commit run --all-files --verbose
 
 # -------------------------------------------------------------------------
 # Dependency management
@@ -85,13 +85,13 @@ update:
 # -------------------------------------------------------------------------
 {% if include_docs %}
 docs-serve:
-    @uv run mkdocs serve
+    @uv run --active mkdocs serve
 
 docs-build:
-    @uv run mkdocs build
+    @uv run --active mkdocs build
 
 docs-deploy:
-    @uv run mkdocs gh-deploy --force
+    @uv run --active mkdocs gh-deploy --force
 {% endif %}
 
 # -------------------------------------------------------------------------
@@ -145,9 +145,9 @@ doctor:
     @uv --version
     @echo ""
     @echo "=== Tools ==="
-    @uv run ruff --version
-    @uv run basedpyright --version || echo "basedpyright not installed"
-    @uv run pytest --version
+    @uv run --active ruff --version
+    @uv run --active basedpyright --version || echo "basedpyright not installed"
+    @uv run --active pytest --version
     @echo ""
     @echo "=== Project ==="
     @echo "Package: {{ package_name }}"
