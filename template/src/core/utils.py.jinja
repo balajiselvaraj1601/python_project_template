@@ -1,55 +1,52 @@
-"""Utility functions for common operations.
+"""System and environment utility helpers.
 
-This module provides reusable utility functions including:
-- Performance measurement decorators for timing function execution
-- Logging integration via the centralized logging manager
+This module contains small utilities for probing the runtime environment,
+such as detecting the presence of vendor-specific hardware or tools.
+
+These helpers are intentionally lightweight and use only the standard library
+so they are safe to call during initialization and in CI.
+
 """
 
-import functools
-import time
-from collections.abc import Callable
-from typing import Any
+from __future__ import annotations
 
-from src.core.logging_manager import get_logger
+import shutil
+import subprocess
 
-logger = get_logger(__name__)
+# =============================================================================
+# GPU DETECTION UTILITIES
+# =============================================================================
 
-def time_execution(func: Callable) -> Callable:
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs) -> Any:
-        start_time = time.perf_counter()
+def has_nvidia_gpu() -> bool:
+    """Check if an NVIDIA GPU is available on the system.
 
-        result = func(*args, **kwargs)
+    This function attempts to run the ``nvidia-smi`` command, which is a
+    utility provided by NVIDIA for monitoring GPU status. If the command
+    executes successfully, it indicates that an NVIDIA GPU is present and
+    accessible.
 
-        end_time = time.perf_counter()
-        duration = round(end_time - start_time, 4)
+    Returns:
+        bool: True if an NVIDIA GPU is detected, False otherwise.
 
-        logger.info(f"Execution time for {func.__name__}: {duration} seconds")
+    Examples:
+        if has_nvidia_gpu():
+            print("NVIDIA GPU detected")
 
-        return result
-    return wrapper
+    Raises:
+        No exceptions are raised for normal execution; subprocess/Cmd errors
+        are caught and interpreted as no GPU present.
 
-def handle_errors(func: Callable) -> Callable:
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs) -> dict[str, Any]:
-
-        try:
-            data = func(*args, **kwargs)
-            return {
-                'status': 'success',
-                'report': f'{func.__name__} completed successfully with params {args} {kwargs}',
-                'data': data
-            }
-        except ValueError as e:
-            return {
-                'status': 'error',
-                'error': f'Validation Error: {e!s}',
-                'report': f'{func.__name__} failed validation with params {args} {kwargs}'
-            }
-        except Exception as e:
-            return {
-                'status': 'error',
-                'error': f'Unexpected: {e!s}',
-                'report': f'{func.__name__} encountered a system error with params {args} {kwargs}'
-            }
-    return wrapper
+    Note:
+        This function is specific to NVIDIA GPUs and will return False on
+        systems without NVIDIA drivers or on non-NVIDIA hardware (e.g., AMD,
+        Intel integrated graphics, or Apple Silicon).
+    """
+    cmd = shutil.which("nvidia-smi")
+    if cmd is None:
+        return False
+    try:
+        subprocess.check_output([cmd])
+    except subprocess.CalledProcessError:
+        return False
+    else:
+        return True

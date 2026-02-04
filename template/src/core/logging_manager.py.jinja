@@ -3,6 +3,7 @@
 This module provides centralized logging configuration and formatting utilities
 for consistent output across all modules. It handles logger creation, section
 headers, and structured field logging.
+
 """
 
 # =============================================================================
@@ -47,28 +48,44 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
 def get_logger(name: str) -> logging.Logger:
-    """Get a configured logger instance for the given module name.
+    """
+    Get a configured logger instance for the given module name.
 
     Args:
-        name: The name of the module requesting the logger (typically
+        name (str): The name of the module requesting the logger (typically
             ``__name__``).
 
     Returns:
         logging.Logger: Configured logger instance.
+
+    Examples:
+        logger = get_logger(__name__)
+        logger.info("hello")
+
+    Raises:
+        No explicit exceptions - errors from the logging module propagate as
+        runtime logging errors.
     """
     return logging.getLogger(name)
 
 
 def list_to_numbered_string(items: list[str]) -> str:
-    """Convert a list of strings into a numbered string format.
+    """
+    Convert a list of strings into a numbered string format.
 
     Args:
-        items: A list of strings to be numbered.
+        items (list[str]): A list of strings to be numbered.
 
     Returns:
-        A string with each item numbered starting from 1, in the format
+        str: A string with each item numbered starting from 1, in the format
         ``"\n  1. Item\n  2. Item\n..."``. Returns an empty string when
         ``items`` is empty.
+
+    Examples:
+        list_to_numbered_string(["alpha", "beta"]) -> "\n1. alpha\n2. beta"
+
+    Raises:
+        No exceptions are raised for normal list inputs.
     """
     if not items:
         return ""
@@ -81,17 +98,24 @@ def list_to_numbered_string(items: list[str]) -> str:
 
 
 def wrap_text(text: str, width: int = LOG_LINE_WIDTH) -> str:
-    """Wrap a long string into lines no longer than ``width`` characters.
+    """
+    Wrap a long string into lines no longer than ``width`` characters.
 
     Preserves existing newlines and wraps long paragraphs for improved
     readability in logs.
 
     Args:
-        text: The input text to wrap.
-        width: Maximum line width (defaults to ``LOG_LINE_WIDTH``).
+        text (str): The input text to wrap.
+        width (int): Maximum line width (defaults to ``LOG_LINE_WIDTH``).
 
     Returns:
-        The wrapped text. Returns an empty string when ``text`` is falsy.
+        str: The wrapped text. Returns an empty string when ``text`` is falsy.
+
+    Examples:
+        wrap_text("a long paragraph...", width=50)
+
+    Raises:
+        No explicit exceptions; invalid types will raise standard TypeError.
     """
 
     if not text:
@@ -107,11 +131,18 @@ def wrap_text(text: str, width: int = LOG_LINE_WIDTH) -> str:
 # =============================================================================
 
 def log_section(title: str, level: int = logging.INFO) -> None:
-    """Log a formatted section header.
+    """
+    Log a formatted section header.
 
     Args:
-        title: The title of the section to log.
-        level: The logging level to use (default: ``logging.INFO``).
+        title (str): The title of the section to log.
+        level (int): The logging level to use (default: ``logging.INFO``).
+
+    Examples:
+        log_section("Initialization")
+
+    Raises:
+        No exceptions; logging module errors propagate normally.
     """
     logger = get_logger(__name__)
     separator = "=" * int(LOG_LINE_WIDTH * 1.1)
@@ -127,11 +158,18 @@ def log_section(title: str, level: int = logging.INFO) -> None:
 
 
 def log_sub_section(title: str, level: int = logging.INFO) -> None:
-    """Log a formatted sub-section header.
+    """
+    Log a formatted sub-section header.
 
     Args:
-        title: The title of the sub-section to log.
-        level: The logging level to use (default: ``logging.INFO``).
+        title (str): The title of the sub-section to log.
+        level (int): The logging level to use (default: ``logging.INFO``).
+
+    Examples:
+        log_sub_section("Details")
+
+    Raises:
+        No exceptions; logging module errors propagate normally.
     """
     logger = get_logger(__name__)
     separator = "-" * LOG_LINE_WIDTH
@@ -147,10 +185,17 @@ def log_sub_section(title: str, level: int = logging.INFO) -> None:
 
 
 def log_section_divider(level: int = logging.INFO) -> None:
-    """Log a divider line for separating sections in logs.
+    """
+    Log a divider line for separating sections in logs.
 
     Args:
-        level: The logging level to use (default: ``logging.INFO``).
+        level (int): The logging level to use (default: ``logging.INFO``).
+
+    Examples:
+        log_section_divider()
+
+    Raises:
+        No exceptions; logging module errors propagate normally.
     """
     logger = get_logger(__name__)
     separator = "-" * LOG_LINE_WIDTH
@@ -165,15 +210,22 @@ def log_section_divider(level: int = logging.INFO) -> None:
 # =============================================================================
 
 def log_fields(fields: dict[str, Any], level: int = logging.INFO) -> None:
-    """Log a dictionary of fields in a structured format with aligned colons.
+    """
+    Log a dictionary of fields in a structured format with aligned colons.
 
     This function formats key-value pairs so that all colons appear in the same
     column for better readability. The ``PADDING_WIDTH`` constant determines the
     minimum width allocated for keys, ensuring vertical alignment of colons.
 
     Args:
-        fields: Dictionary of field names and values to log.
-        level: The logging level to use (default: ``logging.INFO``).
+        fields (dict[str, Any]): Dictionary of field names and values to log.
+        level (int): The logging level to use (default: ``logging.INFO``).
+
+    Examples:
+        log_fields({"status": "ok", "items": ["a", "b"]})
+
+    Raises:
+        No explicit exceptions; formatting issues will raise standard errors.
     """
     logger = get_logger(__name__)
 
@@ -204,11 +256,18 @@ def log_fields(fields: dict[str, Any], level: int = logging.INFO) -> None:
 # =============================================================================
 
 def log_message(message: str, level: int = logging.INFO) -> None:
-    """Log a simple message at the specified logging level.
+    """
+    Log a simple message at the specified logging level.
 
     Args:
-        message: The message to log.
-        level: The logging level to use (default: ``logging.INFO``).
+        message (str): The message to log.
+        level (int): The logging level to use (default: ``logging.INFO``).
+
+    Examples:
+        log_message("Starting up")
+
+    Raises:
+        No explicit exceptions; logging errors propagate from the logging module.
     """
     logger = get_logger(__name__)
     wrapped = wrap_text(message, width=LOG_LINE_WIDTH)
