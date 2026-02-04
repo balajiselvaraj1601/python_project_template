@@ -186,6 +186,9 @@ temp_*/
 tmp_*/
 
 # Temporary files
+temp_*.py
+temp_*.ipynb
+temp_*.md
 *.tmp
 *.temp
 *.bak
