@@ -55,29 +55,3 @@ repos:
       - id: mixed-line-ending
       # - id: no-commit-to-branch
       #   args: ["--branch", "main", "--branch", "master"]
-
-  # ---------------------------------------------------------------------------
-  # Markdown formatting
-  # ---------------------------------------------------------------------------
-
-
-  # ---------------------------------------------------------------------------
-  # Detect secrets (prevent leaks)
-  # ---------------------------------------------------------------------------
-  # Uncomment to enable secret detection (create baseline first):
-  # Run: uv tool run detect-secrets scan > .secrets.baseline
-  # - repo: https://github.com/Yelp/detect-secrets
-  #   rev: v1.5.0
-  #   hooks:
-  #     - id: detect-secrets
-  #       args: ["--baseline", ".secrets.baseline"]
-  #       stages: [pre-commit]
-
-  # ---------------------------------------------------------------------------
-  # Optional notebook output-stripping for example notebooks
-  # ---------------------------------------------------------------------------
-  # Uncomment if you store example notebooks in the repo and want outputs removed on commit.
-  # - repo: https://github.com/kynan/nbstripout
-  #   rev: v0.7.0
-  #   hooks:
-  #     - id: nbstripout

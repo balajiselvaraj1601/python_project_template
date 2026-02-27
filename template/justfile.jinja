@@ -128,8 +128,19 @@ clean:
 # CI (local mirror of GitHub Actions)
 # -------------------------------------------------------------------------
 
+static_check:
+    @just fix
+    @just fmt
+    @just lint
+    @just type
+
+# -------------------------------------------------------------------------
+# CI (local mirror of GitHub Actions)
+# -------------------------------------------------------------------------
+
 ci:
     @just fix
+    @just fmt    
     @just lint
     @just type
     @just test

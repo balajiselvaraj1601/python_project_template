@@ -1,6 +1,6 @@
 # .pre-commit-config.yaml
 # Production-ready pre-commit configuration optimized for uv / ruff / BasedPyright.
-# - Uses uv tool to run tools without requiring package installation
+# - Uses uv to run repo-managed tool versions
 # - Keeps fast checks at commit stage, heavier checks at push/CI
 # - Pin external hooks; review revs regularly (Renovate can help)
 
@@ -8,13 +8,13 @@ default_install_hook_types: [pre-commit]
 
 repos:
   # ---------------------------------------------------------------------------
-  # Local hooks (use uv tool for standalone tools)
+  # Local hooks (use uv so versions are managed by pyproject.toml)
   # ---------------------------------------------------------------------------
   - repo: local
     hooks:
       - id: ruff-format
         name: Ruff Format
-        entry: bash -c 'uv tool run ruff format "$@"' --
+        entry: uv run ruff format
         language: system
         types: [python]
         pass_filenames: true
@@ -22,7 +22,7 @@ repos:
 
       - id: ruff-check
         name: Ruff Lint (auto-fix)
-        entry: bash -c 'uv tool run ruff check --fix "$@"' --
+        entry: uv run ruff check --fix
         language: system
         types: [python]
         pass_filenames: true
@@ -30,7 +30,7 @@ repos:
 
       - id: basedpyright
         name: BasedPyright (type check)
-        entry: bash -c 'uv tool run basedpyright'
+        entry: uv run basedpyright
         language: system
         types: [python]
         pass_filenames: false
@@ -53,10 +53,5 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: mixed-line-ending
-      # Uncomment to prevent direct commits to main/master branches
       # - id: no-commit-to-branch
       #   args: ["--branch", "main", "--branch", "master"]
-
-  # ---------------------------------------------------------------------------
-  # Markdown formatting
-  # ---------------------------------------------------------------------------

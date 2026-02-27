@@ -30,6 +30,6 @@ jobs:
         run: mkdocs build --site-dir site
 
       - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: site

@@ -1,3 +1,7 @@
+# Local ignores
+runner.sh
+full_runner.sh
+docs/
 # ==========================================================================
 # Python Core
 # ==========================================================================
@@ -11,6 +15,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+context/
 build/
 develop-eggs/
 dist/
@@ -120,12 +125,15 @@ dmypy.json
 # ==========================================================================
 # Environments
 .env
+.env.*
+!.env.test.example
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+.adk/
 
 # ==========================================================================
 # IDEs
@@ -182,8 +190,14 @@ Thumbs.db
 *.ipynb.backup
 
 # Temporary folder
+artifacts/
+notes/
 temp_*/
 tmp_*/
+monocle_trace_*.json
+temp_artifacts/
+outputs/
+output/
 
 # Temporary files
 temp_*.py
@@ -203,3 +217,6 @@ optuna_study.db
 optuna_study_seed_*.db
 optuna_results.json
 optuna_results.csv
+
+mlflow.db
+mlruns/

@@ -1,5 +1,5 @@
 # ==========================================================================
-# Justfile for python-project-template
+# Justfile for google_adk_guide
 #
 # Usage:
 #   just            # list commands
@@ -24,13 +24,14 @@ _set_env:
 # -------------------------------------------------------------------------
 
 fmt:
-    @uv run --active ruff format .
+    @uv run --active ruff format src tests
 
 lint:
-    @uv run --active ruff check .
+    @uv run --active ruff check src tests
 
 fix:
-    @uv run --active ruff check --fix .
+    @uv run --active ruff check --fix src tests
+
 
 
 # -------------------------------------------------------------------------
@@ -45,17 +46,17 @@ type:
 # -------------------------------------------------------------------------
 
 test:
-   @uv run --active pytest tests/ -v
+    @uv run --active pytest tests/ -v
 
 test-parallel:
-   @uv run --active pytest tests/ -v -n auto
+    @uv run --active pytest tests/ -v -n auto
 
 coverage:
-   @uv run --active pytest tests/ \
-       --cov=src \
-       --cov-report=term-missing \
-       --cov-report=html \
-       --cov-report=xml
+    @uv run --active pytest tests/ \
+        --cov=src \
+        --cov-report=term-missing \
+        --cov-report=html \
+        --cov-report=xml
 
 # -------------------------------------------------------------------------
 # Pre-commit
@@ -78,6 +79,11 @@ sync:
 update:
     @uv lock --upgrade
     @uv sync --extra dev --extra test
+
+# -------------------------------------------------------------------------
+# Docs (optional)
+# -------------------------------------------------------------------------
+
 
 # -------------------------------------------------------------------------
 # Build & Publish
@@ -113,8 +119,19 @@ clean:
 # CI (local mirror of GitHub Actions)
 # -------------------------------------------------------------------------
 
+static_check:
+    @just fix
+    @just fmt
+    @just lint
+    @just type
+
+# -------------------------------------------------------------------------
+# CI (local mirror of GitHub Actions)
+# -------------------------------------------------------------------------
+
 ci:
     @just fix
+    @just fmt
     @just lint
     @just type
     @just test
@@ -135,5 +152,5 @@ doctor:
     @uv run --active pytest --version
     @echo ""
     @echo "=== Project ==="
-    @echo "Package: python_project_template"
+    @echo "Package: google_adk_guide"
     @echo "Python: >= 3.11"
