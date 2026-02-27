@@ -17,6 +17,7 @@ from typing import Any, cast
 # JSON UTILITIES
 # =============================================================================
 
+
 def load_json(file_path: str) -> dict[str, Any]:
     """Load a JSON file and return its contents as a dictionary.
 
@@ -36,3 +37,24 @@ def load_json(file_path: str) -> dict[str, Any]:
     with Path(file_path).open("r", encoding="utf-8") as f:
         data = json.load(f)
         return cast("dict[str, Any]", data)
+
+
+def load_markdown(file_path: str) -> str:
+    """Load a markdown file and return its contents as a string.
+
+    Args:
+        file_path (str): The path to the markdown file to load.
+
+    Returns:
+        str: The contents of the markdown file as a string.
+
+    Examples:
+        content = load_markdown("docs/README.md")
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        UnicodeDecodeError: If the file cannot be decoded as UTF-8.
+    """
+    with Path(file_path).open("r", encoding="utf-8") as f:
+        content = f.read()
+        return content

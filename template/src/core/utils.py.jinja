@@ -8,15 +8,25 @@ so they are safe to call during initialization and in CI.
 
 """
 
-from __future__ import annotations
-
 import shutil
 import subprocess
+import warnings
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+from core.decorators import handle_exceptions_valued
+from core.logging_manager import log_message
+
+warnings.filterwarnings("ignore")
+
 
 # =============================================================================
 # GPU DETECTION UTILITIES
 # =============================================================================
 
+
+@handle_exceptions_valued(False)
 def has_nvidia_gpu() -> bool:
     """Check if an NVIDIA GPU is available on the system.
 
@@ -30,7 +40,7 @@ def has_nvidia_gpu() -> bool:
 
     Examples:
         if has_nvidia_gpu():
-            print("NVIDIA GPU detected")
+            log_message("NVIDIA GPU detected")
 
     Raises:
         No exceptions are raised for normal execution; subprocess/Cmd errors
@@ -44,9 +54,71 @@ def has_nvidia_gpu() -> bool:
     cmd = shutil.which("nvidia-smi")
     if cmd is None:
         return False
+    subprocess.check_output([cmd])
+    return True
+
+
+def load_project_env(dotenv_filename: str = ".env") -> bool:
+    """Load environment variables from the project root .env file.
+
+    This function runs `which python` to get the current interpreter path,
+    then extracts the project root as the directory containing the `.venv` folder.
+
+    e.g. `which python` returns:
+        /Users/kzqr495/Documents/workspace/google_adk_guide/.venv/bin/python
+    so the project root is extracted as:
+        /Users/kzqr495/Documents/workspace/google_adk_guide
+
+    Args:
+        dotenv_filename (str): The name of the .env file to load (default: ".env").
+
+    Returns:
+        bool: True if the .env file was found and loaded, False otherwise.
+
+    Example:
+        from src.core.utils import load_project_env
+        load_project_env()
+    """
+
     try:
-        subprocess.check_output([cmd])
-    except subprocess.CalledProcessError:
+        which_python = subprocess.check_output(["which", "python"], text=True).strip()
+        python_path = Path(which_python)
+        # Walk up until we find the directory that contains `.venv`
+        for parent in python_path.parents:
+            if (parent / ".venv").is_dir():
+                project_root = parent
+                break
+        else:
+            raise RuntimeError(".venv not found in python path hierarchy")
+    except Exception as e:
+        log_message(f"Could not determine project root from `which python`: {e}")
         return False
-    else:
+
+    log_message(f"Python interpreter detected at: {which_python}")
+    log_message(f"Project root detected at: {project_root}")
+
+    dotenv_path = project_root / dotenv_filename
+    if dotenv_path.is_file():
+        load_dotenv(dotenv_path=dotenv_path, override=False)
         return True
+    return False
+
+
+def get_simple_attributes(obj: object) -> dict[str, str | int | float]:
+    """
+    Creates a dictionary of all simple attributes (str, int, float)
+    from a class instance, ignoring dicts, nested objects, callables, etc.
+
+    Args:
+        obj: Any class instance
+
+    Returns:
+        dict: A dictionary of attribute_name -> value for simple types only
+    """
+    allowed_types = (str, int, float)
+
+    return {
+        key: value
+        for key, value in vars(obj).items()
+        if not key.startswith("_") and isinstance(value, allowed_types)
+    }

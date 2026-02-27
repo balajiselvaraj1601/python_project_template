@@ -6,11 +6,8 @@ headers, and structured field logging.
 
 """
 
-# =============================================================================
-# IMPORTS
-# =============================================================================
-
 import logging
+import os
 import textwrap
 from typing import Any
 
@@ -18,26 +15,32 @@ from typing import Any
 # GLOBAL CONSTANTS
 # =============================================================================
 
-# Logging
-LOG_LEVEL = logging.INFO
-PRINT_WIDTH_COUNT: int = 75  # Number of characters for separator lines
-LOG_LINE_WIDTH: int = 75  # Width for log section separators
-PADDING_WIDTH: int = (
-    30  # Padding width for aligning colons in key-value formatted prints
-)
+# Log level may be overridden via the LOG_LEVEL environment variable
+LOG_LEVEL = int(os.getenv("LOG_LEVEL", str(logging.INFO)))
+
+# Separator and formatting widths for structured log output
+PRINT_WIDTH_COUNT: int = 75
+LOG_LINE_WIDTH: int = 75
+PADDING_WIDTH: int = 30
 
 # =============================================================================
 # LOGGING CONFIGURATION
 # =============================================================================
 
-# Configure root logger with consistent formatting
+# Configure root logger formatting
 
-logging.basicConfig(
-    level=LOG_LEVEL,
-    format="%(message)s",
-)
+if LOG_LEVEL == logging.DEBUG:
+    logging.basicConfig(
+        level=LOG_LEVEL,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+else:
+    logging.basicConfig(
+        level=LOG_LEVEL,
+        format="%(message)s",
+    )
 
-# Suppress verbose HTTP request logs from httpx/requests libraries
+# Reduce noisy logs from HTTP libraries
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("httpcore").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -126,9 +129,11 @@ def wrap_text(text: str, width: int = LOG_LINE_WIDTH) -> str:
     wrapped = [textwrap.fill(p, width=width) for p in paragraphs]
     return "\n".join(wrapped)
 
+
 # =============================================================================
 # LOGGING SECTIONS AND SUB-SECTIONS
 # =============================================================================
+
 
 def log_section(title: str, level: int = logging.INFO) -> None:
     """
@@ -205,9 +210,11 @@ def log_section_divider(level: int = logging.INFO) -> None:
     elif level == logging.INFO:
         logger.info(separator)
 
+
 # =============================================================================
 # LOGGING FIELDS
 # =============================================================================
+
 
 def log_fields(fields: dict[str, Any], level: int = logging.INFO) -> None:
     """
@@ -229,10 +236,12 @@ def log_fields(fields: dict[str, Any], level: int = logging.INFO) -> None:
     """
     logger = get_logger(__name__)
 
+    if not fields:
+        logger.info("No fields to display.")
+        return
+
     for key, value in fields.items():
-        formatted_value = (
-            list_to_numbered_string(value) if isinstance(value, list) else value
-        )
+        formatted_value = list_to_numbered_string(value) if isinstance(value, list) else value
 
         # Wrap long strings for both single-line and numbered outputs
         if isinstance(formatted_value, str):
@@ -251,9 +260,11 @@ def log_fields(fields: dict[str, Any], level: int = logging.INFO) -> None:
         elif level == logging.INFO:
             logger.info("  %-*s : %s", PADDING_WIDTH, key, formatted_value)
 
+
 # =============================================================================
 # LOGGING MESSAGES
 # =============================================================================
+
 
 def log_message(message: str, level: int = logging.INFO) -> None:
     """
