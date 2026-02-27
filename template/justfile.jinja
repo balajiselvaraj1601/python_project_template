@@ -1,5 +1,5 @@
 # ==========================================================================
-# Justfile for {{ project_name }}
+# Justfile for google_adk_guide
 #
 # Usage:
 #   just            # list commands
@@ -16,7 +16,7 @@ default:
 # -------------------------------------------------------------------------
 
 _set_env:
-    @echo "Using Python >= {{ python_min_version }}"
+    @echo "Using Python >= 3.11"
     @uv --version > /dev/null
 
 # -------------------------------------------------------------------------
@@ -24,13 +24,13 @@ _set_env:
 # -------------------------------------------------------------------------
 
 fmt:
-    @uv run --active ruff format .
+    @uv run --active ruff format src tests
 
 lint:
-    @uv run --active ruff check .
+    @uv run --active ruff check src tests
 
 fix:
-    @uv run --active ruff check --fix .
+    @uv run --active ruff check --fix src tests
 
 
 
@@ -83,16 +83,7 @@ update:
 # -------------------------------------------------------------------------
 # Docs (optional)
 # -------------------------------------------------------------------------
-{% if include_docs %}
-docs-serve:
-    @uv run --active mkdocs serve
 
-docs-build:
-    @uv run --active mkdocs build
-
-docs-deploy:
-    @uv run --active mkdocs gh-deploy --force
-{% endif %}
 
 # -------------------------------------------------------------------------
 # Build & Publish
@@ -161,5 +152,5 @@ doctor:
     @uv run --active pytest --version
     @echo ""
     @echo "=== Project ==="
-    @echo "Package: {{ package_name }}"
-    @echo "Python: >= {{ python_min_version }}"
+    @echo "Package: google_adk_guide"
+    @echo "Python: >= 3.11"
