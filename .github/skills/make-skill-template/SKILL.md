@@ -57,9 +57,9 @@ description: '<What it does>. Use when <specific triggers, scenarios, keywords u
 
 **CRITICAL**: The `description` is the PRIMARY mechanism for automatic skill discovery. Include:
 
-- **WHAT** the skill does (capabilities)
-- **WHEN** to use it (triggers, scenarios, file types)
-- **Keywords** users might mention in prompts
+1. **WHAT** the skill does (capabilities)
+2. **WHEN** to use it (triggers, scenarios, file types)
+3. **Keywords** users might mention in prompts
 
 **Good example:**
 
@@ -114,14 +114,14 @@ my-awesome-skill/
 
 ## Quick Start: Duplicate This Template
 
-- Copy the `make-skill-template/` folder
-- Rename to your skill name (lowercase, hyphens)
-- Update `SKILL.md`:
+1. Copy the `make-skill-template/` folder
+2. Rename to your skill name (lowercase, hyphens)
+3. Update `SKILL.md`:
    - Change `name:` to match folder name
    - Write a keyword-rich `description:`
    - Replace body content with your instructions
-- Add bundled resources as needed
-- Validate with `npm run skill:validate`
+4. Add bundled resources as needed
+5. Validate with `npm run skill:validate`
 
 ## Validation Checklist
 
